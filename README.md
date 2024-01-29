@@ -1,1 +1,1 @@
-# Time-CapsuleTreasures
+# Time Capsule Treasures
