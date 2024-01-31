@@ -1,7 +1,7 @@
 # from sqlalchemy_serializer import SerializerMixin
-# from sqlalchemy.ext.associationproxy import association_proxy
-# from sqlalchemy.ext.hybrid import hybrid_property
-# from sqlalchemy.orm import validates
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates
 
 
 from config import *
@@ -21,18 +21,18 @@ class User(db.Model):
     _password_hash = db.Column(db.String, nullable=False)
 
     # relationships
-    # collections = db.relationship("Collection", back_populates="user", cascade="all, delete-orphan")
-    # items = association_proxy("collections", "item")
+    collections = db.relationship("Collection", back_populates="user", cascade="all, delete-orphan")
+    comments = db.relationship('Comment', back_populates='user', cascade='all, delete-orphan')
+    forums = db.relationship("Forum", back_populates="user")
+    items = association_proxy("collections", "item")
 
-    # Serializer
-    # serialize_rules = ('-_password_hash', 'collections')
 
     # Validation
 
-    # @hybrid_property
-    # def password_hash(self):
-    #     raise AttributeError("Password hashes are private.")  
-    #     # return self._password_hash
+    @hybrid_property
+    def password_hash(self):
+        raise AttributeError("Password hashes are private.")  
+        # return self._password_hash
 
     # @password_hash.setter
     def password_set(self, password):
@@ -61,13 +61,11 @@ class Item(db.Model):
     trade_status = db.Column(db.Boolean, nullable=False)
     ebay_link = db.Column(db.String)
     decade = db.Column(db.Integer)
+    image = db.Column(db.String, nullable=False)
 
     # Relationships
-    # collections = db.relationship("Collection", back_populates="user", cascade="all, delete-orphan")
-    # users = association_proxy("trips", "user")
-
-    # Serializer
-    # serialize_rules = ('-collections',)
+    collections = db.relationship("Collection", back_populates="user", cascade="all, delete-orphan")
+    users = association_proxy("trips", "user")
 
     # Validation
     
@@ -86,21 +84,18 @@ class Collection(db.Model):
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
 
     # Relationships
-    # user = db.relationship("User", back_populates="collections")
-    # item = db.relationship("Item", back_populates="collections")
+    user = db.relationship("User", back_populates="collections")
+    item = db.relationship("Item", back_populates="collections")
 
-    # Serializer
-    # serialize_rules = ('-user', '-item')
-
-    # Validation
-    # @validates("user_id", "destination_id")
+    # # Validation
+    # @validates("user_id", "item_id")
     # def validate_ids(self, key, id):
     #     if not isinstance(id, int):
     #         raise ValueError(f"{key} must be an integer.")
     #     return id
 
     def __repr__(self):
-        return f"Collection {self.name}"
+        return f"Collection {self.name}, User: {self.user_id}"
 
 
 # Comment => many-to-many
@@ -108,20 +103,19 @@ class Comment(db.Model):
     __tablename__ = 'comments'
     
     id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
 
     # Relationships
-    
-
-    # Serializer
-    
+    user = db.relationship("User", back_populates="comments")
+    item = db.relationship("Item", back_populates="comments")
 
     # Validation
     
 
     def __repr__(self):
-        return "Comment"
+        return f"Comment {self.comment}, Item: {self.item_id}"
 
 
 # Forum => one-to-many
@@ -129,16 +123,14 @@ class Forum(db.Model):
     __tablename__ = 'forums'
     
     id = db.Column(db.Integer, primary_key=True)
+    post = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     # Relationships
-    
-
-    # Serializer
-    
+    user = db.relationship("User", back_populates="forums")
 
     # Validation
     
 
     def __repr__(self):
-        return "Forum"
+        return f"Forum {self.post}, User: {self.user_id}"
