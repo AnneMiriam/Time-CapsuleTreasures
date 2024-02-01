@@ -23,7 +23,7 @@ class User(db.Model):
     # relationships
     collections = db.relationship("Collection", back_populates="user", cascade="all, delete-orphan")
     comments = db.relationship('Comment', back_populates='user', cascade='all, delete-orphan')
-    forums = db.relationship("Forum", back_populates="user")
+    forums = db.relationship("Forum", back_populates="user", cascade='all, delete-orphan')
     items = association_proxy("collections", "item")
 
 
@@ -36,14 +36,14 @@ class User(db.Model):
 
     # @password_hash.setter
     def password_set(self, password):
-        password_hash = bcrypt.generate_password_hash(password.encode("utf-8"))
-        self._password_hash = password_hash.decode("utf-8")
-        # hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())          
-        # self._password_hash = hashed.decode("utf-8")
+        # password_hash = bcrypt.generate_password_hash(password.encode("utf-8"))
+        # self._password_hash = password_hash.decode("utf-8")
+        hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())          
+        self._password_hash = hashed.decode("utf-8")
 
     def password_check(self, password):
-        return bcrypt.check_password_hash(self._password_hash, password.encode("utf-8"))
-        # return bcrypt.checkpw(password.encode("utf-8"), self._password_hash.encode("utf-8"))  
+        # return bcrypt.check_password_hash(self._password_hash, password.encode("utf-8"))
+        return bcrypt.checkpw(password.encode("utf-8"), self._password_hash.encode("utf-8"))  
 
     def __repr__(self):
         return f"User {self.username}"
@@ -64,8 +64,9 @@ class Item(db.Model):
     image = db.Column(db.String, nullable=False)
 
     # Relationships
-    collections = db.relationship("Collection", back_populates="user", cascade="all, delete-orphan")
-    users = association_proxy("trips", "user")
+    collections = db.relationship("Collection", back_populates="item", cascade="all, delete-orphan")
+    comments = db.relationship("Comment", back_populates="item", cascade="all, delete-orphan")
+    users = association_proxy("collections", "user")
 
     # Validation
     
@@ -79,7 +80,7 @@ class Collection(db.Model):
     __tablename__ = 'collections'
     
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, default='My Collection')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
 

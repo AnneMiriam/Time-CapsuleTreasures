@@ -1,6 +1,6 @@
-from models import User, Collection, Comment, Item, Forum
+from models import User
 from flask_marshmallow import Marshmallow
-from marshmallow import Schema, fields, validate, pre_load
+from marshmallow import fields, validate, pre_load
 from config import app
 # from marshmallow_sqlalchemy import SQLAlchemySchema
 
@@ -53,38 +53,4 @@ class UserSchema(ma.SQLAlchemySchema):
             "collection": ma.URLFor("users"),
         }
     )
-
-
-############################# Item ##################################
-
-class ItemSchema(ma.SQLAlchemySchema):
-    class Meta():
-        model = Item
-
-
-
-########################### Collection ###############################
-
-class CollectionSchema(ma.SQLAlchemySchema):
-    class Meta():
-        model = Collection
-
-
-
-############################## Comment ###############################
-
-class CommentSchema(ma.SQLAlchemySchema):
-    class Meta():
-        model = Comment
-
-
-
-############################### Forum ################################## 
-
-class ForumSchema(ma.SQLAlchemySchema):
-    class Meta():
-        model = Forum
-
-
-
 

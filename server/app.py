@@ -3,7 +3,11 @@ from flask import Flask, request, make_response, session, abort
 from flask_restful import Resource
 from os import environ
 from dotenv import load_dotenv
-from schemas import UserSchema, ItemSchema, CollectionSchema, CommentSchema, ForumSchema
+from schemas.user_schema import UserSchema  
+from schemas.item_schema import ItemSchema
+from schemas.collection_schema import CollectionSchema
+from schemas.comment_schema import CommentSchema
+from schemas.forum_schema import ForumSchema
 # Add your model imports
 from models import User, Item, Collection, Comment, Forum
 from marshmallow import ValidationError
@@ -18,7 +22,7 @@ load_dotenv(".env")
 app.secret_key = environ.get("SECRET_KEY")
 
 # ma = Marshmallow(app)
-# user_schema = UserSchema(session=db.session)
+user_schema = UserSchema(session=db.session)
 ################### Home Page #####################
 @app.route("/")
 def index():
@@ -76,33 +80,31 @@ class CheckSession(Resource):
 
 
 ################################# User #################################
-user_schema = UserSchema(session=db.session)
+# user_schema = UserSchema(session=db.session)
 users_schema = UserSchema(many=True, exclude=("items",), session=db.session)
 
 class Users(Resource):
     def get(self):
-        if "user_id" in session:
-            try:
-                users = users_schema.dump(User.query)
-                return users, 200
-            except Exception as e:
-                abort(400, str(e))
-        return {"message": "Not Authorized"}, 401
-        # try:
-        #     return make_response([user.to_dict() for user in User.query.all()], 200)
-        # except Exception as e:
-        #     return make_response({"Error": "Could not get data"}, 400)
+        users = User.query.all()
+        return users_schema.dump(users), 200
+        # if "user_id" in session:
+        #     try:
+        #         users = users_schema.dump(User.query)
+        #         return users, 200
+        #     except Exception as e:
+        #         abort(400, str(e))
+        # return {"message": "Not Authorized"}, 401
 
 
 class UserById(Resource):
     def get(self, id):
-        user = User.query.get(id)
+        user = User.query.filter(User.id == id).first()
         if user:
-            return make_response(user.to_dict(), 200)
+            return user_schema.dump(user), 200
         return make_response({"error": "User not found"}, 404)
 
-########################## Item ##############################
 
+########################## Item ##############################
 
 class Items(Resource):
     def get(self):
@@ -119,8 +121,8 @@ class ItemById(Resource):
     def delete(self,id):
         pass
 
-############################ Collection ############################
 
+############################ Collection ############################
 
 class Collections(Resource):
     def get(self):
@@ -137,8 +139,8 @@ class CollectionById(Resource):
     def delete(self,id):
         pass
 
-############################# Comment #############################
 
+############################# Comment #############################
 
 class Comments(Resource):
     def get(self):
@@ -152,8 +154,8 @@ class CommentById(Resource):
     def delete(self,id):
         pass
 
-################################ Forum ######################################
 
+################################ Forum ######################################
 
 class Forums(Resource):
     def get(self):
@@ -170,6 +172,8 @@ class ForumById(Resource):
     def delete(self,id):
         pass
 
+
+################################## Routes #####################################
 
 api.add_resource(Signup, "/sign_up")
 api.add_resource(Login, "/login")
