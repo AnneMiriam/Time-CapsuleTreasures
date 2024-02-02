@@ -12,7 +12,7 @@ class UserSchema(ma.SQLAlchemySchema):
     class Meta():
         model = User
         load_instance = True
-        fields = ('id', 'first_name', 'username', 'email', 'items')
+        fields = ('id', 'first_name', 'username', 'email', 'collections')
         
     first_name = fields.String(
         required=True, 
@@ -36,8 +36,7 @@ class UserSchema(ma.SQLAlchemySchema):
             lambda p: any(c.isdigit() for c in p),
         ],
     )
-    items = fields.List(fields.Nested('ItemSchema', exclude=('users',)), many=True, dump_only=True)
-    forums = fields.Nested("ForumSchema", exclude=("user",), many=True, dump_only=True)
+    collections = fields.List(fields.Nested('CollectionSchema', exclude=('users',)), many=True, dump_only=True)
     
     @pre_load
     def normal_input(self, data, **kwargs):

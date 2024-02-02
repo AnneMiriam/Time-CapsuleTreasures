@@ -21,14 +21,10 @@ class User(db.Model):
     _password_hash = db.Column(db.String, nullable=False)
 
     # relationships
-    collections = db.relationship("Collection", back_populates="user", cascade="all, delete-orphan")
-    comments = db.relationship('Comment', back_populates='user', cascade='all, delete-orphan')
-    forums = db.relationship("Forum", back_populates="user", cascade='all, delete-orphan')
-    items = association_proxy("collections", "item")
+    user_collections = db.relationship("UserCollection", back_populates="user", cascade="all, delete-orphan")
+    collections = association_proxy("user_collections", "collection")
 
-
-    # Validation
-
+    # Password Validation
     @hybrid_property
     def password_hash(self):
         raise AttributeError("Password hashes are private.")  
@@ -47,7 +43,39 @@ class User(db.Model):
 
     def __repr__(self):
         return f"User {self.username}"
+
+
+# Collection 
+class Collection(db.Model):
+    __tablename__ = 'collections'
     
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    # Relationships
+    user_collections = db.relationship("UserCollection", back_populates="collection", cascade="all, delete-orphan")
+    users = association_proxy('user_collections', 'user')
+    item_collections = db.relationship("ItemCollection", back_populates="collection", cascade="all, delete-orphan")
+    items = association_proxy('item_collections', 'item')
+
+    def __repr__(self):
+        return f"Collection {self.name}"
+
+
+# UserCollection => many-to-many User and Collection
+class UserCollection(db.Model):
+    __tablename__ = 'user_collections'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    collection_id = db.Column(db.Integer, db.ForeignKey('collections.id'))
+
+    # Relationships
+    user = db.relationship("User", back_populates="user_collections")
+    collection = db.relationship("Collection", back_populates="user_collections")
+
+    def __repr__(self):
+        return f"UserCollection {self.user_id} {self.collection_id}"
 
 
 # Item
@@ -64,52 +92,39 @@ class Item(db.Model):
     image = db.Column(db.String, nullable=False)
 
     # Relationships
-    collections = db.relationship("Collection", back_populates="item", cascade="all, delete-orphan")
+    item_collections = db.relationship("ItemCollection", back_populates="item", cascade="all, delete-orphan")
     comments = db.relationship("Comment", back_populates="item", cascade="all, delete-orphan")
-    users = association_proxy("collections", "user")
-
-    # Validation
-    
+    collections = association_proxy('item_collections', 'collection')
 
     def __repr__(self):
             return f"Item {self.name}"
 
 
-# Collection => many-to-many
-class Collection(db.Model):
-    __tablename__ = 'collections'
+# ItemCollection => many-to-many Item and Collection
+class ItemCollection(db.Model):
+    __tablename__ = 'item_collections'
     
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, default='My Collection')
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
+    collection_id = db.Column(db.Integer, db.ForeignKey('collections.id'))
 
     # Relationships
-    user = db.relationship("User", back_populates="collections")
-    item = db.relationship("Item", back_populates="collections")
-
-    # # Validation
-    # @validates("user_id", "item_id")
-    # def validate_ids(self, key, id):
-    #     if not isinstance(id, int):
-    #         raise ValueError(f"{key} must be an integer.")
-    #     return id
+    item = db.relationship("Item", back_populates="item_collections")
+    collection = db.relationship("Collection", back_populates="item_collections")
 
     def __repr__(self):
-        return f"Collection {self.name}, User: {self.user_id}"
+        return f"UserCollection User: {self.user_id}"
 
 
-# Comment => many-to-many
+# Comment => one-to-many
 class Comment(db.Model):
     __tablename__ = 'comments'
     
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
 
     # Relationships
-    user = db.relationship("User", back_populates="comments")
     item = db.relationship("Item", back_populates="comments")
 
     # Validation
@@ -119,19 +134,19 @@ class Comment(db.Model):
         return f"Comment {self.comment}, Item: {self.item_id}"
 
 
-# Forum => one-to-many
-class Forum(db.Model):
-    __tablename__ = 'forums'
+# # Forum => one-to-many
+# class Forum(db.Model):
+#     __tablename__ = 'forums'
     
-    id = db.Column(db.Integer, primary_key=True)
-    post = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     id = db.Column(db.Integer, primary_key=True)
+#     post = db.Column(db.String)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    # Relationships
-    user = db.relationship("User", back_populates="forums")
+#     # Relationships
+#     user = db.relationship("User", back_populates="forums")
 
-    # Validation
+#     # Validation
     
 
-    def __repr__(self):
-        return f"Forum {self.post}, User: {self.user_id}"
+#     def __repr__(self):
+#         return f"Forum {self.post}, User: {self.user_id}"
