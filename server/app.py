@@ -9,7 +9,7 @@ from schemas.collection_schema import CollectionSchema
 from schemas.comment_schema import CommentSchema
 
 # Add your model imports
-from models import User, Item, Collection, Comment
+from models import User, Item, Collection, Comment, UserCollection, ItemCollection
 from marshmallow import ValidationError
 
 # from flask_bcrypt import Bcrypt
@@ -103,10 +103,66 @@ class UserById(Resource):
             return user_schema.dump(user), 200
         return make_response({"error": "User not found"}, 404)
 
+######################### Collection #########################
+collection_schema = CollectionSchema(session=db.session)
+collections_schema = CollectionSchema(many=True, exclude=("items",), session=db.session)
+
+class Collections(Resource):
+    # Collections should be visible to all users on home page
+    def get(self):
+        collections = Collection.query.all()
+        if collections:
+            return collections_schema.dump(collections), 200
+        return {'error': 'No collections found'}, 404
+
+        
+    def post(self):
+        # Collections should only be created when logged in
+        user = User.query.get(session.get('user_id'))
+        if user:
+            try:
+                data = request.get_json()
+                collection = collection_schema.load(data)
+                db.session.add(collection)
+                db.session.commit()
+                return collection_schema(collection), 201
+            except ValidationError:
+                return {'error': 'Bad request'}, 400
+        return {'error': 'User must be logged in'}, 401
+
+
+class CollectionById(Resource):
+    def get(self, id):
+        collection = Collection.query.get(id)
+        if collection:
+            return collection_schema.dump(collection), 200
+        return make_response({"error": "Collection not found"}, 404)
+
+    def patch(self,id):
+        collection = Collection.query.get(id)
+        if collection:
+            try:
+                data = request.get_json()
+                update_collection = collection_schema.load(data, instance=collection, partial=True)
+                db.session.commit()
+                return collection_schema.dump(update_collection), 200
+            except ValidationError as e:
+                return {'error': 'Bad request'}, 400
+        return {'error': 'Collection not found'}, 404
+
+    def delete(self,id):
+        collection = Collection.query.get(id)
+        if not collection:
+            return {'error': 'Collection not found'}, 404
+        else:
+            db.session.delete(collection)
+            db.session.commit()
+            return {'message': 'Collection deleted successfully'}, 204
+
 
 ########################## Item ##############################
 item_schema = ItemSchema(session=db.session)
-items_schema = ItemSchema(many=True, session=db.session)
+items_schema = ItemSchema(many=True, exclude=('comments',), session=db.session)
 
 class Items(Resource):
     def get(self):
@@ -163,63 +219,6 @@ class ItemById(Resource):
             return {'message': 'Item deleted successfully'}, 204
 
 
-############################ Collection ############################
-collection_schema = CollectionSchema(session=db.session)
-collections_schema = CollectionSchema(many=True, session=db.session)
-
-class Collections(Resource):
-    # Collections should be visible to all users on home page
-    def get(self):
-        collections = Collection.query.all()
-        if collections:
-            return collections_schema.dump(collections), 200
-        return {'error': 'No collections found'}, 404
-
-        
-    def post(self):
-        # Collections should only be created when logged in
-        user = User.query.get(session.get('user_id'))
-        if user:
-            try:
-                data = request.get_json()
-                collection = collection_schema.load(data)
-                db.session.add(collection)
-                db.session.commit()
-                return collection_schema(collection), 201
-            except ValidationError:
-                return {'error': 'Bad request'}, 400
-        return {'error': 'User must be logged in'}, 401
-
-
-class CollectionById(Resource):
-    def get(self, id):
-        collection = Collection.query.get(id)
-        if collection:
-            return collection_schema.dump(collection), 200
-        return make_response({"error": "Collection not found"}, 404)
-
-    def patch(self,id):
-        collection = Collection.query.get(id)
-        if collection:
-            try:
-                data = request.get_json()
-                update_collection = collection_schema.load(data, instance=collection, partial=True)
-                db.session.commit()
-                return collection_schema.dump(update_collection), 200
-            except ValidationError as e:
-                return {'error': 'Bad request'}, 400
-        return {'error': 'Collection not found'}, 404
-
-    def delete(self,id):
-        collection = Collection.query.get(id)
-        if not collection:
-            return {'error': 'Collection not found'}, 404
-        else:
-            db.session.delete(collection)
-            db.session.commit()
-            return {'message': 'Collection deleted successfully'}, 204
-
-
 ############################# Comment #############################
 comment_schema = CommentSchema(session=db.session)
 comments_schema = CommentSchema(many=True, session=db.session)
@@ -227,23 +226,31 @@ comments_schema = CommentSchema(many=True, session=db.session)
 class Comments(Resource):
     # comments are only visible on the item that matches it's item_id
     def get(self):
-        item = Item.query.get(session.get('item_id'))
-        if item:
-            comments = Comment.query
+        comment = Comment.query.all()
+        return comments_schema.dump(comment), 200
 
     def post(self):
-        # only users can leave a comment
-        user = User.query.get(session.get('user_id'))
-        if user:
-            try:
-                data = request.get_json()
-                comment = comment_schema.load(data)
-                db.session.add(comment)
-                db.session.commit()
-                return comment_schema(comment), 201
-            except ValidationError:
-                return {'error': 'Bad request'}, 400
-        return {'error': 'User must be logged in'}, 401
+        ## only users can leave a comment
+        # user = User.query.get(session.get('user_id'))
+        # if user:
+        #     try:
+        #         data = request.get_json()
+        #         comment = comment_schema.load(data)
+        #         db.session.add(comment)
+        #         db.session.commit()
+        #         return comment_schema(comment), 201
+        #     except ValidationError:
+        #         return {'error': 'Bad request'}, 400
+        # return {'error': 'User must be logged in'}, 401
+        try:
+            data = request.get_json()
+            comment = comment_schema.load(data)
+            db.session.add(comment)
+            db.session.commit()
+            return comment_schema(comment), 201
+        except ValidationError:
+            return {'error': 'Bad request'}, 400
+
 
 
 class CommentById(Resource):
@@ -251,22 +258,22 @@ class CommentById(Resource):
         pass
 
 
-################################ Forum ######################################
+# ################################ Forum ######################################
 
-class Forums(Resource):
-    def get(self):
-        pass
+# class Forums(Resource):
+#     def get(self):
+#         pass
 
-    def post(self):
-        pass
+#     def post(self):
+#         pass
 
 
-class ForumById(Resource):
-    def patch(self,id):
-        pass
+# class ForumById(Resource):
+#     def patch(self,id):
+#         pass
 
-    def delete(self,id):
-        pass
+#     def delete(self,id):
+#         pass
 
 
 ################################## Routes #####################################
@@ -283,8 +290,8 @@ api.add_resource(Collections, "/collections")
 api.add_resource(CollectionById, "/collections/<int:id>")
 api.add_resource(Comments, "/comments")
 api.add_resource(CommentById, "/comments/<int:id>")
-api.add_resource(Forums, "/forums")
-api.add_resource(ForumById, "/forums/<int:id>")
+# api.add_resource(Forums, "/forums")
+# api.add_resource(ForumById, "/forums/<int:id>")
 
 
 if __name__ == "__main__":

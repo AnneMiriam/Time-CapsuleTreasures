@@ -1,10 +1,6 @@
 from models import Item
-from flask_marshmallow import Marshmallow
 from marshmallow import Schema, fields, validate, pre_load
-from config import app
-# from marshmallow_sqlalchemy import SQLAlchemySchema
-
-ma = Marshmallow(app)
+from config import ma
 
 
 ############################# Item ##################################
@@ -13,7 +9,7 @@ class ItemSchema(ma.SQLAlchemySchema):
     class Meta():
         model = Item
         load_instance = True
-        fields = ('id', 'name', 'image', 'description', 'category', 'decade', 'trade_status', 'ebay_link')
+        fields = ('id', 'name', 'image', 'description', 'category', 'decade', 'trade_status', 'ebay_link', 'comments')
 
     name = fields.String(required=True,
         validate=validate.Length(min=1, max=80, error='name must be between 1 and 80 characters')
@@ -31,8 +27,7 @@ class ItemSchema(ma.SQLAlchemySchema):
     )
     trade_status = fields.Boolean(required=True)
     
-    users = fields.List(fields.Nested('UserSchema', only=('id', 'username')), 
-        many=True, dump_only=True)
+    comments = fields.List(fields.Nested("CommentSchema"), many=True, dump_only=True)
     
     url = ma.Hyperlinks(
         {

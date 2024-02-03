@@ -9,6 +9,7 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_bcrypt import Bcrypt
+from flask_marshmallow import Marshmallow
 
 
 # Instantiate app, set attributes
@@ -37,3 +38,4 @@ CORS(app)
 bcrypt = Bcrypt(app)
 
 # Marshmallow
+ma = Marshmallow(app)

@@ -1,10 +1,7 @@
 from models import User
-from flask_marshmallow import Marshmallow
 from marshmallow import fields, validate, pre_load
-from config import app
-# from marshmallow_sqlalchemy import SQLAlchemySchema
+from config import ma
 
-ma = Marshmallow(app)
 
 ############################ User #################################
 class UserSchema(ma.SQLAlchemySchema):
@@ -36,7 +33,7 @@ class UserSchema(ma.SQLAlchemySchema):
             lambda p: any(c.isdigit() for c in p),
         ],
     )
-    collections = fields.List(fields.Nested('CollectionSchema', exclude=('users',)), many=True, dump_only=True)
+    collections = fields.List(fields.Nested('CollectionSchema', exclude=('items',)), many=True, dump_only=True)
     
     @pre_load
     def normal_input(self, data, **kwargs):

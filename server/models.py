@@ -127,9 +127,6 @@ class Comment(db.Model):
     # Relationships
     item = db.relationship("Item", back_populates="comments")
 
-    # Validation
-    
-
     def __repr__(self):
         return f"Comment {self.comment}, Item: {self.item_id}"
 

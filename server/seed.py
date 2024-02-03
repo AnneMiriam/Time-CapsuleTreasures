@@ -5,7 +5,7 @@ from faker import Faker
 # Local imports
 from config import *
 import bcrypt
-from models import User, Collection, Comment, Item, Forum
+from models import User, Collection, Comment, Item, UserCollection, ItemCollection
 
 
 fake = Faker()
@@ -79,7 +79,7 @@ def seed_items():
             name = item['name'],
             description = item['description'],
             decade = rc(DECADES),
-            category = rc(CATEGORIES),
+            category = item['category'],
             trade_status = item['trade_status'],
             ebay_link = item['ebay_link']
         )
@@ -107,46 +107,64 @@ def seed_users():
     print("Users added!")
 
 
+def seed_collection():
+    for cat in CATEGORIES:
+        new_collection = Collection(
+            name = rc(CATEGORIES)
+        )
+        db.session.add(new_collection)
+    db.session.commit()
+    print("Collection added")
+
+
 def associate_collection():
     for _ in range(30):
         user_instance = db.session.query(User).filter_by(id=random.randrange(1, 30)).first()
-        item_instance = db.session.query(Item).filter_by(id=random.randrange(1, len(ITEMS))).first()
+        collection_instance = db.session.query(Collection).filter_by(id=random.randrange(1, 30)).first()
 
-        if user_instance is not None and item_instance is not None:
-            existing_association = db.session.query(Collection).filter_by(
-                user_id=user_instance.id, item_id=item_instance.id).first()
+        if user_instance is not None and collection_instance is not None:
+            existing_association = db.session.query(UserCollection).filter_by(
+                user_id=user_instance.id, collection_id=collection_instance.id).first()
 
             if not existing_association:
-                new_user_item = Collection(name='', user_id=user_instance.id, item_id=item_instance.id)
-                db.session.add(new_user_item)
+                new_user_collection = UserCollection(user_id=user_instance.id, collection_id=collection_instance.id)
+                db.session.add(new_user_collection)
     db.session.commit()
     print("Collection associations added!")
 
 
-def associate_comment():
+def associate_item():
     for _ in range(30):
-        user_instance = db.session.query(User).filter_by(id=random.randrange(1, 30)).first()
         item_instance = db.session.query(Item).filter_by(id=random.randrange(1, len(ITEMS))).first()
+        collection_instance = db.session.query(Collection).filter_by(id=random.randrange(1, 30)).first()
 
-        if user_instance is not None and item_instance is not None:
-            existing_association = db.session.query(Comment).filter_by(
-                user_id=user_instance.id, item_id=item_instance.id).first()
+        if item_instance is not None and collection_instance is not None:
+            existing_association = db.session.query(ItemCollection).filter_by(
+                item_id=item_instance.id, collection_id=collection_instance.id).first()
 
             if not existing_association:
-                new_user_item = Comment(user_id=user_instance.id, item_id=item_instance.id)
+                new_item_collection = ItemCollection(item_id=item_instance.id, collection_id=collection_instance.id)
+                db.session.add(new_item_collection)
+    db.session.commit()
+    print("Item associations added!")
+
+
+def associate_comment():
+    for _ in range(30):
+        item_instance = db.session.query(Item).filter_by(id=random.randrange(1, len(ITEMS))).first()
+
+        if item_instance is not None:
+            existing_association = db.session.query(Comment).filter_by(
+                item_id=item_instance.id).first()
+
+            if not existing_association:
+                new_user_item = Comment(item_id=item_instance.id)
                 db.session.add(new_user_item)
     db.session.commit()
     print("Comment associations added!")
 
 
-def seed_forums():
-    for forum in FORUMS:
-        new_forum = Forum(
-            post = forum['post']
-        )
-        db.session.add(new_forum)
-    db.session.commit()
-    print("Forums added!")
+
 
 if __name__ == '__main__':
     fake = Faker()
@@ -155,6 +173,7 @@ if __name__ == '__main__':
         clear_tables()
         seed_users()
         seed_items()
-        seed_forums()
+        seed_collection()
         associate_collection()
+        associate_item()
         associate_comment()
