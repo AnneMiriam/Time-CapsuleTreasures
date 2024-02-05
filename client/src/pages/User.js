@@ -1,0 +1,1 @@
+import CollectionCard from '../components/CollectionCard'
