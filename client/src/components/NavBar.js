@@ -1,41 +1,82 @@
-import { NavLink, useLocation } from "react-router-dom";
-// import "./NavBar.css";
+import { NavLink, useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { AuthContext } from "./AuthContext";
 import "../styles.css"
 
-/* define the NavBar component */
-function NavBar() {
-//   const location = useLocation();
+function LoggedInLinks() {
+  const { setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    fetch('/logout', {method: "DELETE"})
+    .then(() => {
+      setUser(null);
+      localStorage.removeItem('user');
+      navigate('/login');
+    })
+  }
   return (
     <nav>
       <NavLink
         to="/"
-        /* add styling to Navlink */
         className="nav-link homeLink"
         activeClassName="active">
         {/* 🏰 */}
       </NavLink>
 
       <NavLink
+        to="/collections"
+        className="nav-link collectionLink"
+        activeClassName="active">
+        🎠 My Collections
+      </NavLink>
+
+      <NavLink
+        to="/login"
+        className="nav-link logoutLink"
+        activeClassName="active"
+        onClick={handleLogout}>
+        Logout
+      </NavLink>
+    </nav>
+  )
+}
+
+function LoggedOutLinks() {
+  return (
+    <nav>
+      <NavLink
         to="/login"
         className="nav-link loginLink"
         activeClassName="active">
-        {/* 🪵📥 */}
+          {/* <img src="client/src/assets/Login.jpeg" alt="Login" /> */}
       </NavLink>
 
       <NavLink
         to="/sign_up"
         className="nav-link signupLink"
         activeClassName="active">
-         {/* 🪧👆🏻 */}
+        {/* <img src="client/src/assets/Signup.jpeg" alt="Signup" /> */}
       </NavLink>
+    </nav>
+  )
+}
 
-      <NavLink
-        to="/collections"
-        className="nav-link tripLink"
-        activeClassName="active">
-        {/* 🎠 */}
-      </NavLink>
+/* define the NavBar component */
+function NavBar() {
+  const { user } = useContext(AuthContext);
+  const loggedIn = user && Object.keys(user).length > 0;
+  return (
+    <nav>
+      {/* <NavLink>
+        Time Capsule Treasures
+      </NavLink> */}
+      <div>
+        <ul>
+          {loggedIn ? <LoggedInLinks /> : <LoggedOutLinks />}
+        </ul>
+      </div>
+      
     </nav>
   );
 }

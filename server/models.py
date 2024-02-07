@@ -90,6 +90,7 @@ class Item(db.Model):
     ebay_link = db.Column(db.String)
     decade = db.Column(db.Integer)
     image = db.Column(db.String, nullable=False)
+    likes = db.Column(db.Integer)
 
     # Relationships
     item_collections = db.relationship("ItemCollection", back_populates="item", cascade="all, delete-orphan")

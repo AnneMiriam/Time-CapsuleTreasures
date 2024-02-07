@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 
-function ToyForm({handleNewItem}) {
+function ItemForm({handleNewItem}) {
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
   const [category, setCategory] = useState('');
@@ -138,4 +138,4 @@ function handleSubmit(e) {
   );
 }
 
-export default ToyForm;
+export default ItemForm;

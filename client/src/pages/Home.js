@@ -1,17 +1,17 @@
 import "../styles.css"
 import React from "react";
-import NavBar from "../components/NavBar";
+// import NavBar from "../components/NavBar";
 
 function Home() {
   return (
     <>
       <header>
 
-        <NavBar />
+        {/* <NavBar /> */}
       </header>
       <div className="homeGridContainer">
         <div className="leftColumn homeColumn">
-          <p> Featured Items</p>
+          {/* <img src="client/src/assets/Logo.jpeg" alt="Logo"/> */}
         </div>
         <main className="homeBackground">
           <div>

@@ -38,7 +38,7 @@ export default function Login() {
 
   return (
     <main>
-      <NavBar />
+      {/* <NavBar /> */}
       <div></div>
       <div className="loginMain">
         <div className="logoContainer"></div>
@@ -69,8 +69,8 @@ export default function Login() {
             </div>
           </div>
         </form>
-        <p>
-          Don't have an account? <Link to="/sign_up">Sign Up</Link>
+        <p className="font">
+          Don't have an account? <Link to="/sign_up" className="links">Sign Up</Link>
         </p>
       </div>
     </main>

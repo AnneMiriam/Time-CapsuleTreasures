@@ -4,27 +4,34 @@ import {
   BrowserRouter as Router,
   Route,
   Routes
-} from "react-router-dom"; //KLP added Navigate
+} from "react-router-dom"; 
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import Signup from "../pages/Signup";
-// import User from "../pages/User"
-// import LogoutButton from "../components/LogoutButton";
+import Collection from "../pages/Collection";
+import User from "../pages/User"
+import NavBar from "./NavBar";
 import { AuthProvider } from "./AuthContext";
 
 const App = () => {
     return(
-        <AuthProvider>
-            <Router>
-                <Routes>
-                    <Route path='/' element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/sign_up" element={<Signup />} />
-                    {/* <Route path="/user" element={<User />} /> */}
-                    {/* <Route path="/collections" element={<Collections />} /> */}
-                </Routes>
-            </Router>
-        </AuthProvider>
+        <Router>
+
+            <AuthProvider>
+                <>
+                    <NavBar />
+                </>
+                <div>
+                    <Routes>
+                        <Route path='/' element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/sign_up" element={<Signup />} />
+                        <Route path="/user" element={<User />} />
+                        <Route path="/collections" element={<Collection />} />
+                    </Routes>
+                </div>
+            </AuthProvider>
+        </Router>
     );
 };
 export default App;

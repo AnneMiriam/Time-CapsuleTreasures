@@ -25,6 +25,7 @@ ITEMS = [
     #     'description': '',
     #     'trade_status': '',
     #     'ebay_link': '',
+        # 'likes': 0,
     # },
     {
         'name': 'VHS tape',
@@ -34,6 +35,7 @@ ITEMS = [
         'description': 'VHS workout tape and VCR',
         'trade_status': True,
         'ebay_link': '',
+        'likes': 0,
     },
     {
         'name': 'Lisa Frank Stationary',
@@ -43,6 +45,7 @@ ITEMS = [
         'description': 'A Lisa Frank sticker sheet and pencil sharpener(missing eraser).',
         'trade_status': False,
         'ebay_link': '',
+        'likes': 1,
     },
     {
         'name': 'GS teddy bear',
@@ -52,6 +55,7 @@ ITEMS = [
         'description': 'A teddy bear from Meadow Mountain Ranch Girl Scout Camp in Colorado',
         'trade_status': False,
         'ebay_link': '',
+        'likes': 3,
     },
 ]
 
@@ -63,14 +67,14 @@ DECADES = [
     1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000
 ]
 
-FORUMS = [
-    {
-        'post': 'I am looking for a top similar to one my sister had in the 90s, that she passed on to me. It was crush velvet, had a collar, and only three button in front at the bust. I loved that top and now that it is back in style I am sad I got rid of it.'
-    },
-    {
-        'post': 'I have been looking for a copy of a VHS of the Chipmunks for 20 years. It was called Around the World with the Chipmunks. Does anyone know where I could find one that still plays?'
-    }
-]
+# FORUMS = [
+#     {
+#         'post': 'I am looking for a top similar to one my sister had in the 90s, that she passed on to me. It was crush velvet, had a collar, and only three button in front at the bust. I loved that top and now that it is back in style I am sad I got rid of it.'
+#     },
+#     {
+#         'post': 'I have been looking for a copy of a VHS of the Chipmunks for 20 years. It was called Around the World with the Chipmunks. Does anyone know where I could find one that still plays?'
+#     }
+# ]
 
 def seed_items():
     for item in ITEMS:
@@ -81,7 +85,8 @@ def seed_items():
             decade = rc(DECADES),
             category = item['category'],
             trade_status = item['trade_status'],
-            ebay_link = item['ebay_link']
+            ebay_link = item['ebay_link'],
+            likes = item['likes']
         )
         db.session.add(new_item) 
     db.session.commit()
