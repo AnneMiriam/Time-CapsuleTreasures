@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import NavBar from "../components/NavBar";
 import { AuthContext } from "../components/AuthContext";
 
-export default function Signup() {
+function Signup() {
   const { setUser } = useContext(AuthContext)
   const [loginInfo, setLoginInfo] = useState({
+    first_name: "",
     username: "",
     password: "",
     email: "",
@@ -23,22 +23,29 @@ export default function Signup() {
       },
       body: JSON.stringify(loginInfo),
     })
-      .then((r) => r.json())
-      .then((data) => {
-        setUser(data);
-      });
+    .then((r) => r.json())
+    .then((data) => {
+      setUser(data);
+    });
   };
 
   return (
     <main>
-      {/* <NavBar /> */}
-      <div></div>
       <div className="signupMain">
         <div className="logoContainer"></div>
         <div className="titleContainer">
           <h1 className="loginTitle">Time Capsule Signup</h1>
         </div>
         <form className="loginForm" onSubmit={handleSubmit}>
+        <div className="input-container">
+            <label htmlFor="first_name">First Name: </label>
+            <input
+              value={loginInfo.first_name}
+              id="first_name"
+              name="first_name"
+              onChange={handleLoginChange}
+            />
+          </div>
           <div className="input-container">
             <label htmlFor="username">Username: </label>
             <input
@@ -78,3 +85,5 @@ export default function Signup() {
     </main>
   );
 }
+
+export default Signup;

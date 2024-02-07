@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ItemForm from '../components/ItemForm';
 import ItemContainer from '../components/ItemContainer'
-import NavBar from '../components/NavBar'
+
 
 // Collection should fetch all items that share that collection_id
 // Collection should have a hidden form to add new items
@@ -40,7 +40,6 @@ function Collection() {
 
     return (
         <>
-            <NavBar />
             <ItemContainer 
                 items={items} 
                 removeItem={removeItem} 
@@ -48,6 +47,9 @@ function Collection() {
                 // updateItem={updateItem}
                 />
             {showForm ? <ItemForm handleNewItem={addNewItem} /> : null}
+            <div className='btnContainer'>
+                <button onClick={handleClick}>Add an Item</button>
+            </div>
         </>
     )
 }

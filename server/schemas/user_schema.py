@@ -19,7 +19,8 @@ class UserSchema(ma.SQLAlchemySchema):
         required=True,
         validate=validate.Length(min=5, max=20, error='Username must be between 5 and 20 characters')
     )
-    email = fields.Email(required=True)
+    # email = fields.Email(required=True)
+    email = fields.String(required=True)
     password = fields.String(
         load_only=True, 
         required=True,
@@ -35,11 +36,11 @@ class UserSchema(ma.SQLAlchemySchema):
     )
     collections = fields.List(fields.Nested('CollectionSchema', exclude=('items',)), many=True, dump_only=True)
     
-    @pre_load
-    def normal_input(self, data, **kwargs):
-        # Convert email to lowercase before validation
-        data['email'] = data.get('email', '').lower().strip()
-        return data
+    # @pre_load
+    # def normal_input(self, data, **kwargs):
+    #     # Convert email to lowercase before validation
+    #     data['email'] = data.get('email', '').lower().strip()
+    #     return data
     
     url = ma.Hyperlinks(
         {

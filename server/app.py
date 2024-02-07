@@ -39,11 +39,12 @@ class Signup(Resource):
                 first_name = request.json['first_name']
             )
             user_schema.validate(new_user)
-            new_user.password_hash = request.json["password"]
+            # new_user.password_hash = request.json["password"]
+            new_user.password_set(request.json["password"])
             db.session.add(new_user)
             db.session.commit()
             session["user_id"] = new_user.id
-            return user_schema.dump(), 201
+            return user_schema.dump(new_user), 201
         except ValueError as e:
             return {"error": f"{e}"}, 400
 
@@ -138,17 +139,17 @@ class CollectionById(Resource):
             return collection_schema.dump(collection), 200
         return make_response({"error": "Collection not found"}, 404)
 
-    def patch(self,id):
-        collection = Collection.query.get(id)
-        if collection:
-            try:
-                data = request.get_json()
-                update_collection = collection_schema.load(data, instance=collection, partial=True)
-                db.session.commit()
-                return collection_schema.dump(update_collection), 200
-            except ValidationError as e:
-                return {'error': 'Bad request'}, 400
-        return {'error': 'Collection not found'}, 404
+    # def patch(self,id):
+    #     collection = Collection.query.get(id)
+    #     if collection:
+    #         try:
+    #             data = request.get_json()
+    #             update_collection = collection_schema.load(data, instance=collection, partial=True)
+    #             db.session.commit()
+    #             return collection_schema.dump(update_collection), 200
+    #         except ValidationError as e:
+    #             return {'error': 'Bad request'}, 400
+    #     return {'error': 'Collection not found'}, 404
 
     def delete(self,id):
         collection = Collection.query.get(id)
