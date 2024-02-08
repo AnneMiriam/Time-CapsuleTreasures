@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 function ItemCard({ userItem, removeItem, updateItem, addLike }){
-    const {name, image, description, category, decade, tradeStatus, ebayLink, likes, id } = userItem
+    const {name, image, description, category, decade, trade_status, ebayLink, likes, id } = userItem
+    // const [isTrade, setIsTrade] = useState(false)
 
     function tradeItem() {
         fetch(`/items/${id}`, {
@@ -27,8 +28,10 @@ function ItemCard({ userItem, removeItem, updateItem, addLike }){
         })
     }
 
+
+
     return (
-        <div className="card">
+        <div className="item-card">
             <h2>{name}</h2>
             <img
                 src={image}
@@ -38,8 +41,8 @@ function ItemCard({ userItem, removeItem, updateItem, addLike }){
             <p>Description: {description}</p>
             <p>Category: {category}</p>
             <p>Decade: {decade}</p>
-            <p>{likes} Likes</p>
-            <button className="like-btn" onClick={like} >Like {"<3"}</button>
+            {trade_status ? <p>Open to trade</p> : null}
+            <button className="like-btn" onClick={like} >🧡 {likes} Likes</button>
         </div>
     )
 }

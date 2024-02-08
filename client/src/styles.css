@@ -18,57 +18,6 @@ nav {
   /* border: 5px solid green; */
 }
 
-.homeGridContainer {
-  display: grid;
-  /* font-family: 'Exo 2', sans-serif; */
-  grid-template-columns: 1fr 2fr 1fr;
-  gap: 20px;
-  flex-grow: 1;
-  overflow: auto;
-  /* padding: 20px; */
-  /* border: 5px solid black; */
-} 
-
-.homeColumn {
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  margin-top: 300px;
-  font-size: 25px;
-  margin-left: 50px;
-  margin-right: 50px;
-  align-items: top;
-  color: white;
-}
-
-.homeBackground {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  /* border: 5px solid blue; */
-}
-
-.mainContent {
-  flex: 1;
-  /* background-image: url("./assets/Logo.png"); */
-  background-size: contain;
-  background-position: top center;
-  background-repeat: no-repeat;
-  height: 75vh;
-  /* border: 5px solid yellow; */
-}
-
-.home-header {
-  font-family:  'Honk', system-ui;
-  text-align: center;
-  /* color: white; */
-  font-size: 75px;
-  /* background-color: #061f23; */
-  line-height: 0.5;
-  /* border: 5px solid purple; */
-}
 
 .nav-link {
   margin-left: 1px;
@@ -356,6 +305,53 @@ nav {
 }
 
 .del-btn {
+  position: relative;
+  border-radius: 5px;
+  height: 2rem;
+  width: auto;
+  background-image: linear-gradient(
+    to right,
+    rgb(243, 71, 171),
+    rgb(243, 207, 63)
+  );
+  font-family: 'Exo 2', sans-serif;
+  font-weight: bolder;
+}
+
+#item-container {
+  word-spacing: 2px;
+  margin-bottom: 2rem;
+}
+
+.item-card {
+  text-align: left;
+  justify-content: space-between;
+  font-family: 'Exo 2', sans-serif;
+  border: #c5aa3d solid 2px;
+  border-radius: 5px;
+  padding: 1rem;
+  width: 20rem;
+  height: 30rem;
+  display: inline-grid;
+  margin: 1rem 2rem;
+  box-shadow: 3px 4px #f65882;
+  overflow: auto;
+  font-size: small;
+  background-color: rgb(255, 255, 240);
+}
+
+.item-card h2 {
+  font-family:  'Honk', system-ui;
+  text-align: center;
+}
+
+.item-image {
+  justify-self: center;
+  height: 12rem;
+  width: auto;
+}
+
+.like-btn {
   position: relative;
   border-radius: 5px;
   height: 2rem;
