@@ -23,9 +23,9 @@ def index():
     return render_template("index.html")
     # return "<h1>Time Capsule Treasures</h1>"
 
-@app.errorhandler(404)
-def not_found(e):
-    return render_template("index.html")
+# @app.errorhandler(404)
+# def not_found(e):
+#     return render_template("index.html")
 
 ######################Login/SignUp/CheckSession ##########################
 
@@ -278,10 +278,10 @@ class CommentById(Resource):
 
 ################################## Routes #####################################
 
-api.add_resource(Signup, "/api/sign_up")
-api.add_resource(Login, "/api/login")
-api.add_resource(Logout, "/api/logout")
-api.add_resource(CheckSession, "/api/check_session")
+api.add_resource(Signup, "/sign_up")
+api.add_resource(Login, "/login")
+api.add_resource(Logout, "/logout")
+api.add_resource(CheckSession, "/check_session")
 api.add_resource(Users, "/api/users")
 api.add_resource(UserById, "/api/users/<int:id>")
 api.add_resource(Items, "/api/items")

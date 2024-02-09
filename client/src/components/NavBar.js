@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import "../styles.css"
 
@@ -7,8 +7,12 @@ function LoggedInLinks() {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    navigate('/login');
+  }, [navigate])
+
   const handleLogout = () => {
-    fetch('/api/logout', {method: "DELETE"})
+    fetch('/logout', {method: "DELETE"})
     .then(() => {
       setUser(null);
       localStorage.removeItem('user');
@@ -32,7 +36,7 @@ function LoggedInLinks() {
       </NavLink>
 
       <NavLink
-        to="/api/login"
+        to="/login"
         className="nav-link logoutLink"
         activeClassName="active"
         onClick={handleLogout}>
@@ -46,14 +50,14 @@ function LoggedOutLinks() {
   return (
     <nav>
       <NavLink
-        to="/api/login"
+        to="/login"
         className="nav-link loginLink"
         activeClassName="active">
           {/* <img src="client/src/assets/Login.jpeg" alt="Login" /> */}
       </NavLink>
 
       <NavLink
-        to="/api/sign_up"
+        to="/sign_up"
         className="nav-link signupLink"
         activeClassName="active">
         {/* <img src="client/src/assets/Signup.jpeg" alt="Signup" /> */}
@@ -68,9 +72,6 @@ function NavBar() {
   const loggedIn = user && Object.keys(user).length > 0;
   return (
     <nav>
-      {/* <NavLink>
-        Time Capsule Treasures
-      </NavLink> */}
       <div>
         <ul>
           {loggedIn ? <LoggedInLinks /> : <LoggedOutLinks />}
