@@ -9,7 +9,7 @@ function CollectionForm({handleNewCltn}) {
         const newCollection = {
             name
         }
-        fetch('/collections', {
+        fetch('/api/collections', {
             method: "POST",
             headers: {
                 "Content-Type":"application/json"

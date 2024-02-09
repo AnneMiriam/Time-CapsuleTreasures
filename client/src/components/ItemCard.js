@@ -5,7 +5,7 @@ function ItemCard({ userItem, removeItem, updateItem, addLike }){
     // const [isTrade, setIsTrade] = useState(false)
 
     function tradeItem() {
-        fetch(`/items/${id}`, {
+        fetch(`/api/items/${id}`, {
             method: 'DELETE'
         })
         .then(() => {
@@ -14,7 +14,7 @@ function ItemCard({ userItem, removeItem, updateItem, addLike }){
     }
 
     function like() {
-        fetch(`/items/${id}`, {
+        fetch(`/api/items/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

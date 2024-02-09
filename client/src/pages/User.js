@@ -9,7 +9,7 @@ function User() {
     const [collections, setCollections] = useState([]);
 
     useEffect(() => {
-        fetch('/collections')
+        fetch('/api/collections')
         .then(r => r.json())
         .then(setCollections)
     },[])

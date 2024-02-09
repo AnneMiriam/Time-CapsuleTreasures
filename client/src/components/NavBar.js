@@ -8,7 +8,7 @@ function LoggedInLinks() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    fetch('/logout', {method: "DELETE"})
+    fetch('/api/logout', {method: "DELETE"})
     .then(() => {
       setUser(null);
       localStorage.removeItem('user');
@@ -25,14 +25,14 @@ function LoggedInLinks() {
       </NavLink>
 
       <NavLink
-        to="/collections"
+        to="/api/collections"
         className="nav-link collectionLink"
         activeClassName="active">
         🎠 My Collections
       </NavLink>
 
       <NavLink
-        to="/login"
+        to="/api/login"
         className="nav-link logoutLink"
         activeClassName="active"
         onClick={handleLogout}>
@@ -46,14 +46,14 @@ function LoggedOutLinks() {
   return (
     <nav>
       <NavLink
-        to="/login"
+        to="/api/login"
         className="nav-link loginLink"
         activeClassName="active">
           {/* <img src="client/src/assets/Login.jpeg" alt="Login" /> */}
       </NavLink>
 
       <NavLink
-        to="/sign_up"
+        to="/api/sign_up"
         className="nav-link signupLink"
         activeClassName="active">
         {/* <img src="client/src/assets/Signup.jpeg" alt="Signup" /> */}

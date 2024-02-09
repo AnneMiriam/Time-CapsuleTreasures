@@ -24,7 +24,7 @@ function handleSubmit(e) {
     ebayLink,
     likes: 0
   }
-  fetch('/items', {
+  fetch('/api/items', {
     method: "POST",
     headers: {
       Accept: "application/json",

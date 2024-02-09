@@ -1,8 +1,6 @@
 # Remote library imports
-from flask import Flask, request, make_response, session, abort
+from flask import request, make_response, session, render_template
 from flask_restful import Resource
-from os import environ
-from dotenv import load_dotenv
 from schemas.user_schema import UserSchema  
 from schemas.item_schema import ItemSchema
 from schemas.collection_schema import CollectionSchema
@@ -17,16 +15,17 @@ from marshmallow import ValidationError
 # Local imports
 from config import app, db, api
 
-# Secret Key
-load_dotenv(".env")
-app.secret_key = environ.get("SECRET_KEY")
-
 # ma = Marshmallow(app)
 user_schema = UserSchema(session=db.session)
 ################### Home Page #####################
 @app.route("/")
 def index():
-    return "<h1>Time Capsule Treasures</h1>"
+    return render_template("index.html")
+    # return "<h1>Time Capsule Treasures</h1>"
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
 
 ######################Login/SignUp/CheckSession ##########################
 
@@ -279,18 +278,18 @@ class CommentById(Resource):
 
 ################################## Routes #####################################
 
-api.add_resource(Signup, "/sign_up")
-api.add_resource(Login, "/login")
-api.add_resource(Logout, "/logout")
-api.add_resource(CheckSession, "/check_session")
-api.add_resource(Users, "/users")
-api.add_resource(UserById, "/users/<int:id>")
-api.add_resource(Items, "/items")
-api.add_resource(ItemById, "/items/<int:id>")
-api.add_resource(Collections, "/collections")
-api.add_resource(CollectionById, "/collections/<int:id>")
-api.add_resource(Comments, "/comments")
-api.add_resource(CommentById, "/comments/<int:id>")
+api.add_resource(Signup, "/api/sign_up")
+api.add_resource(Login, "/api/login")
+api.add_resource(Logout, "/api/logout")
+api.add_resource(CheckSession, "/api/check_session")
+api.add_resource(Users, "/api/users")
+api.add_resource(UserById, "/api/users/<int:id>")
+api.add_resource(Items, "/api/items")
+api.add_resource(ItemById, "/api/items/<int:id>")
+api.add_resource(Collections, "/api/collections")
+api.add_resource(CollectionById, "/api/collections/<int:id>")
+api.add_resource(Comments, "/api/comments")
+api.add_resource(CommentById, "/api/comments/<int:id>")
 # api.add_resource(Forums, "/forums")
 # api.add_resource(ForumById, "/forums/<int:id>")
 
