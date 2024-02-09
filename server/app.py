@@ -58,7 +58,7 @@ class Login(Resource):
             if user and user.authenticate(password):
                 session["user_id"] = user.id
                 return user_schema.dump(user), 200
-            session.clear()
+            # session.clear()
             return {"error": "Incorrect username or password"}, 401
         except Exception as e:
             return {"error": f"{e}"}, 403

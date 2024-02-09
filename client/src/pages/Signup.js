@@ -1,9 +1,10 @@
-import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext,  } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/AuthContext";
 
 function Signup() {
   const { setUser } = useContext(AuthContext)
+  const navigate = useNavigate()
   const [loginInfo, setLoginInfo] = useState({
     first_name: "",
     username: "",
@@ -26,6 +27,7 @@ function Signup() {
     .then((r) => r.json())
     .then((data) => {
       setUser(data);
+      navigate('/');
     });
   };
 

@@ -1,10 +1,11 @@
 import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import { AuthContext } from "../components/AuthContext";
 
-export default function Login() {
+function Login() {
   const { setUser } = useContext(AuthContext); // Access setUser from AuthContext
+  const navigate = useNavigate()
   const [loginInfo, setLoginInfo] = useState({ username: "", password: "" });
   
   
@@ -30,6 +31,7 @@ export default function Login() {
       .then((data) => {
         localStorage.setItem("user", JSON.stringify(data)); 
         setUser(data);
+        navigate('/');
       })
       .catch((e) => {
         console.error(e);
@@ -76,3 +78,4 @@ export default function Login() {
     </main>
   );
 }
+export default Login;

@@ -26,8 +26,8 @@ const App = () => {
                         <Route path='/' element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/sign_up" element={<Signup />} />
-                        <Route path="/items" element={<Collection />} />
-                        <Route path="/collections" element={<User />} />
+                        <Route path="/api/items" element={<Collection />} />
+                        <Route path="/api/collections" element={<User />} />
                     </Routes>
                 </div>
             </AuthProvider>

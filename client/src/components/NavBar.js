@@ -7,10 +7,6 @@ function LoggedInLinks() {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    navigate('/login');
-  }, [navigate])
-
   const handleLogout = () => {
     fetch('/logout', {method: "DELETE"})
     .then(() => {
@@ -47,6 +43,12 @@ function LoggedInLinks() {
 }
 
 function LoggedOutLinks() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate('/login');
+  }, [navigate])
+
   return (
     <nav>
       <NavLink
