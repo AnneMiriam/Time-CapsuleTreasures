@@ -118,17 +118,25 @@ class Collections(Resource):
         
     def post(self):
         # Collections should only be created when logged in
-        user = User.query.get(session.get('user_id'))
-        if user:
-            try:
-                data = request.get_json()
-                collection = collection_schema.load(data)
-                db.session.add(collection)
-                db.session.commit()
-                return collection_schema(collection), 201
-            except ValidationError:
-                return {'error': 'Bad request'}, 400
-        return {'error': 'User must be logged in'}, 401
+        # user = User.query.get(session.get('user_id'))
+        # if user:
+        #     try:
+        #         data = request.get_json()
+        #         collection = collection_schema.load(data)
+        #         db.session.add(collection)
+        #         db.session.commit()
+        #         return collection_schema(collection), 201
+        #     except ValidationError:
+        #         return {'error': 'Bad request'}, 400
+        # return {'error': 'User must be logged in'}, 401
+        try:
+            data = request.get_json()
+            collection = collection_schema.load(data)
+            db.session.add(collection)
+            db.session.commit()
+            return collection_schema.dump(collection), 201
+        except ValidationError:
+            return {'error': 'Bad request'}, 400
 
 
 class CollectionById(Resource):

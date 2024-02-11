@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import ItemForm from '../components/ItemForm';
 import ItemContainer from '../components/ItemContainer'
 
@@ -9,12 +10,21 @@ import ItemContainer from '../components/ItemContainer'
 function Collection() {
     const [showForm, setShowForm] = useState(false);
     const [items, setItems] = useState([]);
+    const [filterItems, setFilterItems] = useState([]);
+    // const collectionId = JSON.parse(localStorage.getItem("collection"))?.id;
+    const {id} = useParams()
 
     useEffect(() => {
-        fetch('/api/items')
+
+        fetch(`/api/collections/${id}`)
         .then(r => r.json())
-        .then(setItems)
-    },[])
+        .then(allItems => {
+            setItems(allItems);
+            console.log(allItems)
+            // setFilterItems(allItems.filter(item => item.collectionId === id))
+        })
+
+    },[id])
 
     function handleClick() {
         setShowForm((showForm) => !showForm);
@@ -24,28 +34,28 @@ function Collection() {
         setItems([...items, newItem])
     }
 
-    function removeItem(id) {
-        setItems(items.filter(item => item.id !== id))
-    }
+    // function removeItem(id) {
+    //     setItems(items.filter(item => item.id !== id))
+    // }
 
-    function addLike(id) {
-        setItems(items.map(item => {
-            if(item.id !== id) {
-                return item
-            } else {
-                return {...item, likes: item.likes +1}
-            }
-        }))
-    }
+    // function addLike(id) {
+    //     setItems(items.map(item => {
+    //         if(item.id !== id) {
+    //             return item
+    //         } else {
+    //             return {...item, likes: item.likes +1}
+    //         }
+    //     }))
+    // }
 
     return (
         <>
-            <ItemContainer 
+            {/* <ItemContainer 
                 items={items} 
                 removeItem={removeItem} 
                 addLike={addLike} 
                 // updateItem={updateItem}
-                />
+                /> */}
             {showForm ? <ItemForm handleNewItem={addNewItem} /> : null}
             <div className='btnContainer'>
                 <button onClick={handleClick}>Add an Item</button>

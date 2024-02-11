@@ -3,7 +3,7 @@ import ItemCard from "./ItemCard";
 
 function ItemContainer({ items, removeItem, updateItem, addLike }) {
     return (
-        <div id='item-container'>
+        <div id='item-card-container'>
             {items.map((item) => (
                 <ItemCard
                     userItem={item}

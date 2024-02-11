@@ -91,6 +91,22 @@ nav {
   /* border: 5px solid darkorchid; */
 }
 
+.logoutLink {
+  background-image: url("./assets/Logout.png");
+  background-size: cover; 
+  display: block;
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  /* border: 5px solid orange; */
+}
+
+.logoutLink.active {
+  width: 120px;
+  height: 120px;
+  /* border: 5px solid brown; */
+}
+
 /* LOGIN PAGE */
 
 .loginMain {

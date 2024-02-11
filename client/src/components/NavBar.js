@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "./AuthContext";
 import "../styles.css"
 
@@ -25,7 +25,7 @@ function LoggedInLinks() {
       </NavLink>
 
       <NavLink
-        to="/api/collections"
+        to="/collections"
         className="nav-link collectionLink"
         activeClassName="active">
         🎠 My Collections
@@ -43,11 +43,11 @@ function LoggedInLinks() {
 }
 
 function LoggedOutLinks() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    navigate('/login');
-  }, [navigate])
+  // useEffect(() => {
+  //   navigate('/login');
+  // }, [navigate])
 
   return (
     <nav>

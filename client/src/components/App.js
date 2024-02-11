@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -16,7 +16,6 @@ import { AuthProvider } from "./AuthContext";
 const App = () => {
     return(
         <Router>
-
             <AuthProvider>
                 <>
                     <NavBar />
@@ -26,8 +25,8 @@ const App = () => {
                         <Route path='/' element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/sign_up" element={<Signup />} />
-                        <Route path="/api/items" element={<Collection />} />
-                        <Route path="/api/collections" element={<User />} />
+                        <Route path="/collections" element={<User />} />
+                        <Route path="/collections/:id" element={<Collection />} />
                     </Routes>
                 </div>
             </AuthProvider>
