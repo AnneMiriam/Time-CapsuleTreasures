@@ -9,33 +9,33 @@ function ItemForm({handleNewItem}) {
   const [decade, setDecade] = useState('');
   const [tradeStatus, setTradeStatus] = useState('');
   const [ebayLink, setEbayLink] = useState('');
+  
+  function handleSubmit(e) {
+    e.preventDefault();
+    
+    const newItem = {
+      name, 
+      image, 
+      category,
+      description,
+      decade,
+      tradeStatus: tradeStatus === "true",
+      ebayLink,
+      likes: 0
+    }
+console.log("newItem", newItem);
 
-  
-function handleSubmit(e) {
-  e.preventDefault();
-  
-  const newItem = {
-    name, 
-    image, 
-    category,
-    description,
-    decade,
-    tradeStatus,
-    ebayLink,
-    likes: 0
+    fetch('/api/items', {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newItem)
+    })
+    .then(res=>res.json())
+    .then(handleNewItem)
   }
-  fetch('/api/items', {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(newItem)
-  })
-  .then(res=>res.json())
-  .then(handleNewItem)
-  
-}
 
   return (
     <div className="container">
@@ -123,8 +123,8 @@ function handleSubmit(e) {
           onChange={e => setTradeStatus(e.target.value)}
         >
             <option value="" disabled>Is this item up for trade?</option>
-            <option value="trade1">False</option>
-            <option value="trade2">True</option>
+            <option value="false">False</option>
+            <option value="true">True</option>
             </select>
         <br />
         <input

@@ -15,15 +15,12 @@ function Collection() {
     const {id} = useParams()
 
     useEffect(() => {
-
         fetch(`/api/collections/${id}`)
         .then(r => r.json())
-        .then(allItems => {
-            setItems(allItems);
-            console.log(allItems)
-            // setFilterItems(allItems.filter(item => item.collectionId === id))
+        .then(collection => {
+            setItems(collection.items);
+            console.log(collection.items)
         })
-
     },[id])
 
     function handleClick() {
@@ -34,31 +31,30 @@ function Collection() {
         setItems([...items, newItem])
     }
 
-    // function removeItem(id) {
-    //     setItems(items.filter(item => item.id !== id))
-    // }
+    function removeItem(id) {
+        setItems(items.filter(item => item.id !== id))
+    }
 
-    // function addLike(id) {
-    //     setItems(items.map(item => {
-    //         if(item.id !== id) {
-    //             return item
-    //         } else {
-    //             return {...item, likes: item.likes +1}
-    //         }
-    //     }))
-    // }
+    function addLike(id) {
+        setItems(items.map(item => {
+            if(item.id !== id) {
+                return item
+            } else {
+                return {...item, likes: item.likes +1}
+            }
+        }))
+    }
 
     return (
         <>
-            {/* <ItemContainer 
+            <ItemContainer 
                 items={items} 
                 removeItem={removeItem} 
                 addLike={addLike} 
-                // updateItem={updateItem}
-                /> */}
+                />
             {showForm ? <ItemForm handleNewItem={addNewItem} /> : null}
             <div className='btnContainer'>
-                <button onClick={handleClick}>Add an Item</button>
+                <button className='submit' onClick={handleClick}>Add an Item</button>
             </div>
         </>
     )

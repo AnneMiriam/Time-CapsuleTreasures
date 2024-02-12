@@ -25,7 +25,7 @@ class ItemSchema(ma.SQLAlchemySchema):
         required=False,
         validate=validate.OneOf(choices=[1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000]),
     )
-    trade_status = fields.Boolean(required=True)
+    trade_status = fields.String(required=True)
     
     likes = fields.Integer(default=0)
     

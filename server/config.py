@@ -24,7 +24,8 @@ app = Flask(
 load_dotenv(".env")
 app.secret_key = os.environ.get("SECRET_KEY")
 
-# if True: #! for when I need to rerun flask  db upgrade and re-seed!!! Don't use 👇🏻
+# if True: 
+    # ! for when I need to rerun flask  db upgrade and re-seed!!! Don't use 👇🏻
 if os.environ.get("RENDER"):
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 else:

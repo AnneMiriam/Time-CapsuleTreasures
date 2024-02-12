@@ -185,8 +185,8 @@ class Items(Resource):
                 name = request.json['name'],
                 category = request.json['category'],
                 description = request.json['description'], 
-                trade_status = request.json['trade_status'],
-                ebay_link = request.json['ebay_link'],
+                trade_status = request.json.get('trade_status'),
+                ebay_link = request.json.get('ebay_link'),
                 decade = request.json['decade'],
                 image = request.json['image'],
             )

@@ -1,11 +1,11 @@
 import React from "react";
-import ItemCard from "./ItemCard";
+import HomeItemCard from "./HomeItemCard";
 
 function HomeItemContainer({ items,  addLike }) {
     return (
         <div id='item-container'>
             {items.map((item) => (
-                <ItemCard
+                <HomeItemCard
                     userItem={item}
                     id={item.id}
                     key={item.id}

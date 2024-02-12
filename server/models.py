@@ -86,7 +86,7 @@ class Item(db.Model):
     name = db.Column(db.String, nullable=False)
     category = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
-    trade_status = db.Column(db.Boolean, nullable=False)
+    trade_status = db.Column(db.String, nullable=False)
     ebay_link = db.Column(db.String)
     decade = db.Column(db.Integer)
     image = db.Column(db.String, nullable=False)
