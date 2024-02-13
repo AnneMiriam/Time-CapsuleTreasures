@@ -11,11 +11,11 @@ from models import User, Item, Collection, Comment, UserCollection, ItemCollecti
 from marshmallow import ValidationError
 
 # from flask_bcrypt import Bcrypt
-
+## ma = Marshmallow(app)
 # Local imports
 from config import app, db, api
 
-# ma = Marshmallow(app)
+
 user_schema = UserSchema(session=db.session)
 ################### Home Page #####################
 @app.route("/")
@@ -110,38 +110,43 @@ collections_schema = CollectionSchema(many=True, exclude=("items",), session=db.
 class Collections(Resource):
     # Collections should be visible to all users on home page
     def get(self):
-        collections = Collection.query.all()
-        if collections:
-            return collections_schema.dump(collections), 200
-        return {'error': 'No collections found'}, 404
-
+        user_id = session.get("user_id")
+        if user_id:
+            user = db.session.get(User, user_id)
+            if user:
+                collections = user.collections
+                return collections_schema.dump(collections), 200
+            return {"error": "User not found"}, 404
+        return {"error": "Must be signed in to view collections"}, 401
         
     def post(self):
         # Collections should only be created when logged in
-        # user = User.query.get(session.get('user_id'))
-        # if user:
-        #     try:
-        #         data = request.get_json()
-        #         collection = collection_schema.load(data)
-        #         db.session.add(collection)
-        #         db.session.commit()
-        #         return collection_schema(collection), 201
-        #     except ValidationError:
-        #         return {'error': 'Bad request'}, 400
-        # return {'error': 'User must be logged in'}, 401
-        try:
-            data = request.get_json()
-            collection = collection_schema.load(data)
-            db.session.add(collection)
-            db.session.commit()
-            return collection_schema.dump(collection), 201
-        except ValidationError:
-            return {'error': 'Bad request'}, 400
+        user = db.session.get(User, session.get('user_id'))
+        if user:
+            try:
+                data = request.get_json()
+                collection = collection_schema.load(data)
+                # Associate the collection with the current user
+                user_collection = UserCollection(user=user, collection=collection)
+                db.session.add(user_collection)
+                db.session.commit()
+                return collection_schema.dump(collection), 201
+            except ValidationError:
+                return {'error': 'Bad request'}, 400
+        return {'error': 'User must be logged in'}, 401
+        # try:
+        #     data = request.get_json()
+        #     collection = collection_schema.load(data)
+        #     db.session.add(collection)
+        #     db.session.commit()
+        #     return collection_schema.dump(collection), 201
+        # except ValidationError:
+        #     return {'error': 'Bad request'}, 400
 
 
 class CollectionById(Resource):
     def get(self, id):
-        collection = Collection.query.get(id)
+        collection = db.session.get(Collection, id)
         if collection:
             return collection_schema.dump(collection), 200
         return make_response({"error": "Collection not found"}, 404)
@@ -159,7 +164,7 @@ class CollectionById(Resource):
     #     return {'error': 'Collection not found'}, 404
 
     def delete(self,id):
-        collection = Collection.query.get(id)
+        collection = db.session.get(Collection, id)
         if not collection:
             return {'error': 'Collection not found'}, 404
         else:

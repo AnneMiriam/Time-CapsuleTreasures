@@ -17,7 +17,10 @@ function CollectionForm({handleNewCltn}) {
             body: JSON.stringify(newCollection)
         })
         .then(r => r.json())
-        .then(handleNewCltn)
+        .then(() => {
+            handleNewCltn();
+            // setName('');
+        })
     }
     return (
         <div className="container">
