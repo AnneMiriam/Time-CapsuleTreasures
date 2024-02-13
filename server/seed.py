@@ -23,9 +23,7 @@ ITEMS = [
     #     'category': '',
     #     'decade': '',
     #     'description': '',
-    #     'trade_status': '',
-    #     'ebay_link': '',
-        # 'likes': 0,
+    #     'likes': 0,
     # },
     {
         'name': 'VHS tape',
@@ -33,8 +31,6 @@ ITEMS = [
         'category': 'VHS',
         'decade': 2000,
         'description': 'VHS workout tape and VCR',
-        'trade_status': 'true',
-        'ebay_link': '',
         'likes': 0,
     },
     {
@@ -43,8 +39,6 @@ ITEMS = [
         'category': 'Other',
         'decade': 1990,
         'description': 'A Lisa Frank sticker sheet and pencil sharpener(missing eraser).',
-        'trade_status': 'false',
-        'ebay_link': '',
         'likes': 1,
     },
     {
@@ -53,8 +47,6 @@ ITEMS = [
         'category': 'Stuffed Animals',
         'decade': 1990,
         'description': 'A teddy bear from Meadow Mountain Ranch Girl Scout Camp in Colorado',
-        'trade_status': 'false',
-        'ebay_link': '',
         'likes': 3,
     },
 ]
@@ -84,8 +76,6 @@ def seed_items():
             description = item['description'],
             decade = rc(DECADES),
             category = item['category'],
-            trade_status = item['trade_status'],
-            ebay_link = item['ebay_link'],
             likes = item['likes']
         )
         db.session.add(new_item) 

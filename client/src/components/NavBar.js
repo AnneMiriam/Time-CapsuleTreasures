@@ -71,7 +71,8 @@ function LoggedOutLinks() {
 /* define the NavBar component */
 function NavBar() {
   const { user } = useContext(AuthContext);
-  const loggedIn = user && Object.keys(user).length > 0;
+  // const loggedIn = user && Object.keys(user).length > 0;
+  const loggedIn = user;
   return (
     <nav>
       <div>
