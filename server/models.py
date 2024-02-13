@@ -30,7 +30,7 @@ class User(db.Model):
         raise AttributeError("Password hashes are private.")  
         # return self._password_hash
 
-    # @password_hash.setter
+    @password_hash.setter
     def password_set(self, password):
         # password_hash = bcrypt.generate_password_hash(password.encode("utf-8"))
         # self._password_hash = password_hash.decode("utf-8")
@@ -86,8 +86,6 @@ class Item(db.Model):
     name = db.Column(db.String, nullable=False)
     category = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
-    trade_status = db.Column(db.String, nullable=False)
-    ebay_link = db.Column(db.String)
     decade = db.Column(db.Integer)
     image = db.Column(db.String, nullable=False)
     likes = db.Column(db.Integer)

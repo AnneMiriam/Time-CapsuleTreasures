@@ -11,11 +11,11 @@ from models import User, Item, Collection, Comment, UserCollection, ItemCollecti
 from marshmallow import ValidationError
 
 # from flask_bcrypt import Bcrypt
-
+## ma = Marshmallow(app)
 # Local imports
 from config import app, db, api
 
-# ma = Marshmallow(app)
+
 user_schema = UserSchema(session=db.session)
 ################### Home Page #####################
 @app.route("/")
@@ -50,18 +50,29 @@ class Signup(Resource):
 
 class Login(Resource):
     def post(self):
-        try:
-            username = request.json["username"]
-            password = request.json["password"]
+        username = request.json["username"]
+        password = request.json["password"]
 
-            user = User.query.filter_by(username=username).first()
-            if user and user.authenticate(password):
-                session["user_id"] = user.id
-                return user_schema.dump(user), 200
-            # session.clear()
-            return {"error": "Incorrect username or password"}, 401
-        except Exception as e:
-            return {"error": f"{e}"}, 403
+        user = User.query.filter_by(username=username).first()
+        if user and user.password_check(password):
+            session["user_id"] = user.id
+            return user_schema.dump(user), 200
+        # session.clear()
+        return {"error": "Incorrect username or password"}, 401
+
+
+        # try:
+        #     username = request.json["username"]
+        #     password = request.json["password"]
+
+        #     user = User.query.filter_by(username=username).first()
+        #     if user and user.authenticate(password):
+        #         session["user_id"] = user.id
+        #         return user_schema.dump(user), 200
+        #     # session.clear()
+        #     return {"error": "Incorrect username or password"}, 401
+        # except Exception as e:
+        #     return {"error": f"{e}"}, 408
 
 
 class Logout(Resource):
@@ -110,56 +121,50 @@ collections_schema = CollectionSchema(many=True, exclude=("items",), session=db.
 class Collections(Resource):
     # Collections should be visible to all users on home page
     def get(self):
-        collections = Collection.query.all()
-        if collections:
-            return collections_schema.dump(collections), 200
-        return {'error': 'No collections found'}, 404
-
+        user_id = session.get("user_id")
+        if user_id:
+            user = db.session.get(User, user_id)
+            if user:
+                collections = user.collections
+                return collections_schema.dump(collections), 200
+            return {"error": "User not found"}, 404
+        return {"error": "Must be signed in to view collections"}, 401
         
     def post(self):
         # Collections should only be created when logged in
-        # user = User.query.get(session.get('user_id'))
-        # if user:
-        #     try:
-        #         data = request.get_json()
-        #         collection = collection_schema.load(data)
-        #         db.session.add(collection)
-        #         db.session.commit()
-        #         return collection_schema(collection), 201
-        #     except ValidationError:
-        #         return {'error': 'Bad request'}, 400
-        # return {'error': 'User must be logged in'}, 401
-        try:
-            data = request.get_json()
-            collection = collection_schema.load(data)
-            db.session.add(collection)
-            db.session.commit()
-            return collection_schema.dump(collection), 201
-        except ValidationError:
-            return {'error': 'Bad request'}, 400
+        user = db.session.get(User, session.get('user_id'))
+        if user:
+            try:
+                data = request.get_json()
+                collection = collection_schema.load(data)
+                # Associate the collection with the current user
+                user_collection = UserCollection(user=user, collection=collection)
+                db.session.add(user_collection)
+                db.session.commit()
+                return collection_schema.dump(collection), 201
+            except ValidationError:
+                return {'error': 'Bad request'}, 400
+        return {'error': 'User must be logged in'}, 401
+        # try:
+        #     data = request.get_json()
+        #     collection = collection_schema.load(data)
+        #     db.session.add(collection)
+        #     db.session.commit()
+        #     return collection_schema.dump(collection), 201
+        # except ValidationError:
+        #     return {'error': 'Bad request'}, 400
 
 
 class CollectionById(Resource):
     def get(self, id):
-        collection = Collection.query.get(id)
+        collection = db.session.get(Collection, id)
         if collection:
             return collection_schema.dump(collection), 200
         return make_response({"error": "Collection not found"}, 404)
 
-    # def patch(self,id):
-    #     collection = Collection.query.get(id)
-    #     if collection:
-    #         try:
-    #             data = request.get_json()
-    #             update_collection = collection_schema.load(data, instance=collection, partial=True)
-    #             db.session.commit()
-    #             return collection_schema.dump(update_collection), 200
-    #         except ValidationError as e:
-    #             return {'error': 'Bad request'}, 400
-    #     return {'error': 'Collection not found'}, 404
 
     def delete(self,id):
-        collection = Collection.query.get(id)
+        collection = db.session.get(Collection, id)
         if not collection:
             return {'error': 'Collection not found'}, 404
         else:
@@ -180,16 +185,22 @@ class Items(Resource):
         return items_schema.dump(items), 200
 
     def post(self):
+        collection = Collection.query.filter
         try:
             new_item = Item(
                 name = request.json['name'],
                 category = request.json['category'],
                 description = request.json['description'], 
-                trade_status = request.json.get('trade_status'),
-                ebay_link = request.json.get('ebay_link'),
                 decade = request.json['decade'],
                 image = request.json['image'],
             )
+            collection_id = request.json['collection_id']
+            collection = Collection.query.get(collection_id)
+            if not collection:
+                return {'error': 'Collection not found'}, 404
+            
+            # Add the item to the specified collection
+            new_item.collections.append(collection)
             db.session.add(new_item)
             db.session.commit()
             return item_schema.dump(new_item), 201

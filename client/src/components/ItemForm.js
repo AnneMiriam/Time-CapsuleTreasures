@@ -7,8 +7,6 @@ function ItemForm({handleNewItem}) {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [decade, setDecade] = useState('');
-  const [tradeStatus, setTradeStatus] = useState('');
-  const [ebayLink, setEbayLink] = useState('');
   
   function handleSubmit(e) {
     e.preventDefault();
@@ -19,8 +17,6 @@ function ItemForm({handleNewItem}) {
       category,
       description,
       decade,
-      tradeStatus: tradeStatus === "true",
-      ebayLink,
       likes: 0
     }
 console.log("newItem", newItem);
@@ -76,14 +72,14 @@ console.log("newItem", newItem);
           onChange={e => setCategory(e.target.value)}
         >
             <option value="" disabled>Select a category</option>
-            <option value="category1">Toys</option>
-            <option value="category2">VHS/VCR</option>
-            <option value="category3">DVD</option>
-            <option value="category4">Books</option>
-            <option value="category5">Stuffed Animals</option>
-            <option value="category6">Games</option>
-            <option value="category7">Clothes</option>
-            <option value="category8">Other</option>
+            <option value="Toys">Toys</option>
+            <option value="VHS/VCR">VHS/VCR</option>
+            <option value="DVD">DVD</option>
+            <option value="Books">Books</option>
+            <option value="Stuffed Animals">Stuffed Animals</option>
+            <option value="Games">Games</option>
+            <option value="Clothes">Clothes</option>
+            <option value="Other">Other</option>
         </select>
         <br />
         <select
@@ -94,38 +90,18 @@ console.log("newItem", newItem);
           onChange={e => setDecade(e.target.value)}
         >
             <option value="" disabled>Select a decade</option>
-            <option value="decade1">1900 and earlier</option>
-            <option value="decade2">1910</option>
-            <option value="decade3">1920</option>
-            <option value="decade4">1930</option>
-            <option value="decade5">1940</option>
-            <option value="decade6">1950</option>
-            <option value="decade7">1960</option>
-            <option value="decade8">1970</option>
-            <option value="decade9">1980</option>
-            <option value="decade10">1990</option>
-            <option value="decade11">2000</option>
+            <option value="1900">1900 and earlier</option>
+            <option value="1910">1910</option>
+            <option value="1920">1920</option>
+            <option value="1930">1930</option>
+            <option value="1940">1940</option>
+            <option value="1950">1950</option>
+            <option value="1960">1960</option>
+            <option value="1970">1970</option>
+            <option value="1980">1980</option>
+            <option value="1990">1990</option>
+            <option value="2000">2000</option>
         </select>
-        <br />
-        <input
-          type="text"
-          name="ebay_link"
-          placeholder="Item's ebay_link if any"
-          className="input-text"
-          value={ebayLink}
-          onChange={e => setEbayLink(e.target.value)}
-        />
-        <br />
-        <select
-          name="trade_status"
-          className="input-text"
-          value={tradeStatus}
-          onChange={e => setTradeStatus(e.target.value)}
-        >
-            <option value="" disabled>Is this item up for trade?</option>
-            <option value="false">False</option>
-            <option value="true">True</option>
-            </select>
         <br />
         <input
           type="submit"

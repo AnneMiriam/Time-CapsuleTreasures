@@ -9,7 +9,7 @@ class ItemSchema(ma.SQLAlchemySchema):
     class Meta():
         model = Item
         load_instance = True
-        fields = ('id', 'name', 'image', 'description', 'category', 'decade', 'trade_status', 'ebay_link', 'likes', 'comments')
+        fields = ('id', 'name', 'image', 'description', 'category', 'decade', 'likes', 'comments')
 
     name = fields.String(required=True,
         validate=validate.Length(min=1, max=80, error='name must be between 1 and 80 characters')
@@ -25,7 +25,6 @@ class ItemSchema(ma.SQLAlchemySchema):
         required=False,
         validate=validate.OneOf(choices=[1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000]),
     )
-    trade_status = fields.String(required=True)
     
     likes = fields.Integer(default=0)
     

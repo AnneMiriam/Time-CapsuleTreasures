@@ -1,5 +1,5 @@
 import React from 'react';
-import Collection from '../pages/Collection';
+// import Collection from '../pages/Collection';
 
 // Shows first 4 items images 
 // Shows Name of collections
@@ -9,13 +9,21 @@ function CollectionCard({userCollection, removeCollection}) {
     const {name, id} = userCollection
 
     function deleteCollection() {
-        fetch(`/collections/${id}`, {
+        fetch(`/api/collections/${id}`, {
             method: "DELETE"
         })
-        .then(() => {
-            removeCollection(id)
+        .then((response) => {
+            if (response.ok) {
+                removeCollection(id)
+            } else {
+                console.error('Failed to delete')
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting collection:', error);
         })
     }
+
     return (
         <div className='collection-card'>
             <a href={`/collections/${id}`}>
