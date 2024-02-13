@@ -50,18 +50,29 @@ class Signup(Resource):
 
 class Login(Resource):
     def post(self):
-        try:
-            username = request.json["username"]
-            password = request.json["password"]
+        username = request.json["username"]
+        password = request.json["password"]
 
-            user = User.query.filter_by(username=username).first()
-            if user and user.authenticate(password):
-                session["user_id"] = user.id
-                return user_schema.dump(user), 200
-            # session.clear()
-            return {"error": "Incorrect username or password"}, 401
-        except Exception as e:
-            return {"error": f"{e}"}, 403
+        user = User.query.filter_by(username=username).first()
+        if user and user.password_check(password):
+            session["user_id"] = user.id
+            return user_schema.dump(user), 200
+        # session.clear()
+        return {"error": "Incorrect username or password"}, 401
+
+
+        # try:
+        #     username = request.json["username"]
+        #     password = request.json["password"]
+
+        #     user = User.query.filter_by(username=username).first()
+        #     if user and user.authenticate(password):
+        #         session["user_id"] = user.id
+        #         return user_schema.dump(user), 200
+        #     # session.clear()
+        #     return {"error": "Incorrect username or password"}, 401
+        # except Exception as e:
+        #     return {"error": f"{e}"}, 408
 
 
 class Logout(Resource):
@@ -151,17 +162,6 @@ class CollectionById(Resource):
             return collection_schema.dump(collection), 200
         return make_response({"error": "Collection not found"}, 404)
 
-    # def patch(self,id):
-    #     collection = Collection.query.get(id)
-    #     if collection:
-    #         try:
-    #             data = request.get_json()
-    #             update_collection = collection_schema.load(data, instance=collection, partial=True)
-    #             db.session.commit()
-    #             return collection_schema.dump(update_collection), 200
-    #         except ValidationError as e:
-    #             return {'error': 'Bad request'}, 400
-    #     return {'error': 'Collection not found'}, 404
 
     def delete(self,id):
         collection = db.session.get(Collection, id)
@@ -185,6 +185,7 @@ class Items(Resource):
         return items_schema.dump(items), 200
 
     def post(self):
+        collection = Collection.query.filter
         try:
             new_item = Item(
                 name = request.json['name'],
@@ -193,6 +194,13 @@ class Items(Resource):
                 decade = request.json['decade'],
                 image = request.json['image'],
             )
+            collection_id = request.json['collection_id']
+            collection = Collection.query.get(collection_id)
+            if not collection:
+                return {'error': 'Collection not found'}, 404
+            
+            # Add the item to the specified collection
+            new_item.collections.append(collection)
             db.session.add(new_item)
             db.session.commit()
             return item_schema.dump(new_item), 201

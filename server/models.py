@@ -30,7 +30,7 @@ class User(db.Model):
         raise AttributeError("Password hashes are private.")  
         # return self._password_hash
 
-    # @password_hash.setter
+    @password_hash.setter
     def password_set(self, password):
         # password_hash = bcrypt.generate_password_hash(password.encode("utf-8"))
         # self._password_hash = password_hash.decode("utf-8")

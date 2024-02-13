@@ -1,5 +1,5 @@
 import React from 'react';
-import Collection from '../pages/Collection';
+// import Collection from '../pages/Collection';
 
 // Shows first 4 items images 
 // Shows Name of collections

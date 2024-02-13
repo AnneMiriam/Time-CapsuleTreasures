@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import NavBar from "../components/NavBar";
 import { AuthContext } from "../components/AuthContext";
 
 function Login() {
@@ -40,7 +39,6 @@ function Login() {
 
   return (
     <main>
-      {/* <NavBar /> */}
       <div></div>
       <div className="loginMain">
         <div className="logoContainer"></div>

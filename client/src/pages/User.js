@@ -7,8 +7,8 @@ import { AuthContext } from '../components/AuthContext'
     // New Collection Form
 
 function User() {
-    const { user } = useContext(AuthContext)
     const [collections, setCollections] = useState([]);
+    const { user } = useContext(AuthContext)
 
     useEffect(() => {
         if (user) {
@@ -21,6 +21,11 @@ function User() {
     function addNewCltn(newCollection) {
         setCollections([...collections, newCollection])
     }
+
+    useEffect(() => {
+        console.log(collections);
+    }, [collections]); // Log collections whenever it changes
+
 
     function removeCollection(id) {
         setCollections(collections.filter(collection => collection.id !== id))

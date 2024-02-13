@@ -27,7 +27,7 @@ ITEMS = [
     # },
     {
         'name': 'VHS tape',
-        'image': 'server/photos/VHS.png',
+        'image': 'https://scontent-den2-1.xx.fbcdn.net/v/t39.30808-6/428131071_10108527245718213_3687863660419901940_n.jpg?stp=cp6_dst-jpg&_nc_cat=100&ccb=1-7&_nc_sid=a73e89&_nc_ohc=C3D3oJ_q3QQAX91qgKE&_nc_ht=scontent-den2-1.xx&oh=00_AfD8C1nR04VtexiWMtgww8BhHsHMApuRS8qxnIrn-UDULQ&oe=65CFB074',
         'category': 'VHS',
         'decade': 2000,
         'description': 'VHS workout tape and VCR',
@@ -35,7 +35,7 @@ ITEMS = [
     },
     {
         'name': 'Lisa Frank Stationary',
-        'image': 'server/photos/LisaFrank.png',
+        'image': 'https://scontent-den2-1.xx.fbcdn.net/v/t39.30808-6/428062810_10108527245793063_7879421246008159756_n.jpg?stp=cp6_dst-jpg&_nc_cat=107&ccb=1-7&_nc_sid=a73e89&_nc_ohc=vWdpX4s8YioAX--TLGb&_nc_ht=scontent-den2-1.xx&oh=00_AfBZ5qK4r2AirWXOXNZlMtVmQMB7NFsmksU7--lgiQ6Vcg&oe=65D0AE4F',
         'category': 'Other',
         'decade': 1990,
         'description': 'A Lisa Frank sticker sheet and pencil sharpener(missing eraser).',
@@ -43,7 +43,7 @@ ITEMS = [
     },
     {
         'name': 'GS teddy bear',
-        'image': 'server/photos/MMRteddy.png',
+        'image': 'https://scontent-den2-1.xx.fbcdn.net/v/t39.30808-6/427872914_10108527245778093_1413272578601052751_n.jpg?stp=cp6_dst-jpg&_nc_cat=105&ccb=1-7&_nc_sid=a73e89&_nc_ohc=rVE7XnkJSskAX8CbWKH&_nc_ht=scontent-den2-1.xx&oh=00_AfCDzi_nKmGSo-QP7gsP0GKjSpHLSIWVYtThPlhblLPafA&oe=65D087E5',
         'category': 'Stuffed Animals',
         'decade': 1990,
         'description': 'A teddy bear from Meadow Mountain Ranch Girl Scout Camp in Colorado',
