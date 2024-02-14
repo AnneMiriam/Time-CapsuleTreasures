@@ -19,7 +19,7 @@ class ItemSchema(ma.SQLAlchemySchema):
         )
     category = fields.String(
         required=True,
-        validate=validate.OneOf(choices=['Toys', 'VHS', 'Books', 'Stuffed Animals', 'Games', 'Clothes', 'DVD', 'Other']),
+        validate=validate.OneOf(choices=['Toys', 'VHS', 'Books', 'Stuffed Animals', 'Games', 'Clothes', 'DVD', 'Music', 'Other']),
     )
     # decade = fields.Integer(
     #     required=False,

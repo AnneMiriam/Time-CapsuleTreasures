@@ -8,7 +8,7 @@ function ItemForm({handleNewItem}) {
   const [description, setDescription] = useState('');
   const [decade, setDecade] = useState('');
   const {id} = useParams()
-  
+
   function handleSubmit(e) {
     e.preventDefault();
     
@@ -88,6 +88,7 @@ console.log("newItem", newItem);
             <option value="Stuffed Animals">Stuffed Animals</option>
             <option value="Games">Games</option>
             <option value="Clothes">Clothes</option>
+            <option value="Music">Music</option>
             <option value="Other">Other</option>
         </select>
         <br />

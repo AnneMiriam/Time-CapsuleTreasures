@@ -263,6 +263,10 @@ nav {
 }
 
 /* Collection Cards */
+.user-name {
+  text-align: center;
+}
+
 #cltn-container {
   margin: 2rem;
 }

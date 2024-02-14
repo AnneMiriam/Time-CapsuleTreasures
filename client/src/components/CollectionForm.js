@@ -20,7 +20,7 @@ function CollectionForm({handleNewCltn}) {
         .then(r => r.json())
         .then((newCollection) => {
             handleNewCltn(newCollection);
-            // setName('');
+            setName('');
         })
     }
     return (
