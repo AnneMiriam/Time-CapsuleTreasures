@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import {useParams} from "react-router-dom"
 
 function ItemForm({handleNewItem}) {
   const [name, setName] = useState('');
@@ -8,10 +8,12 @@ function ItemForm({handleNewItem}) {
   const [description, setDescription] = useState('');
   const [decade, setDecade] = useState('');
   
+  const {id} = useParams()
   function handleSubmit(e) {
     e.preventDefault();
     
     const newItem = {
+      collection_id: id,
       name, 
       image, 
       category,
@@ -24,13 +26,14 @@ console.log("newItem", newItem);
     fetch('/api/items', {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify(newItem)
     })
     .then(res=>res.json())
-    .then(handleNewItem)
+    .then((newItem) => {
+      handleNewItem(newItem)
+    })
   }
 
   return (

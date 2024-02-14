@@ -9,6 +9,7 @@ function CollectionForm({handleNewCltn}) {
         const newCollection = {
             name
         }
+        
         fetch('/api/collections', {
             method: "POST",
             headers: {
@@ -17,8 +18,8 @@ function CollectionForm({handleNewCltn}) {
             body: JSON.stringify(newCollection)
         })
         .then(r => r.json())
-        .then(() => {
-            handleNewCltn();
+        .then((newCollection) => {
+            handleNewCltn(newCollection);
             // setName('');
         })
     }

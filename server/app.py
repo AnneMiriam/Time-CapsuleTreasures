@@ -61,19 +61,6 @@ class Login(Resource):
         return {"error": "Incorrect username or password"}, 401
 
 
-        # try:
-        #     username = request.json["username"]
-        #     password = request.json["password"]
-
-        #     user = User.query.filter_by(username=username).first()
-        #     if user and user.authenticate(password):
-        #         session["user_id"] = user.id
-        #         return user_schema.dump(user), 200
-        #     # session.clear()
-        #     return {"error": "Incorrect username or password"}, 401
-        # except Exception as e:
-        #     return {"error": f"{e}"}, 408
-
 
 class Logout(Resource):
     def delete(self):
@@ -145,14 +132,7 @@ class Collections(Resource):
             except ValidationError:
                 return {'error': 'Bad request'}, 400
         return {'error': 'User must be logged in'}, 401
-        # try:
-        #     data = request.get_json()
-        #     collection = collection_schema.load(data)
-        #     db.session.add(collection)
-        #     db.session.commit()
-        #     return collection_schema.dump(collection), 201
-        # except ValidationError:
-        #     return {'error': 'Bad request'}, 400
+
 
 
 class CollectionById(Resource):
@@ -185,27 +165,28 @@ class Items(Resource):
         return items_schema.dump(items), 200
 
     def post(self):
-        collection = Collection.query.filter
+        data = request.get_json()
+        
         try:
-            new_item = Item(
-                name = request.json['name'],
-                category = request.json['category'],
-                description = request.json['description'], 
-                decade = request.json['decade'],
-                image = request.json['image'],
-            )
-            collection_id = request.json['collection_id']
-            collection = Collection.query.get(collection_id)
-            if not collection:
-                return {'error': 'Collection not found'}, 404
+            # new_item = Item(
+            #     name = request.json['name'],
+            #     category = request.json['category'],
+            #     description = request.json['description'], 
+            #     decade = request.json['decade'],
+            #     image = request.json['image'],
+            # )
             
-            # Add the item to the specified collection
-            new_item.collections.append(collection)
-            db.session.add(new_item)
+            # Associate currrent collection with item
+            collection =  Collection.query.get(data.get("collection_id"))
+            if not collection:
+                raise ValidationError
+            item = item_schema.load(data)
+            item_collection = ItemCollection(collection=collection, item=item)
+            db.session.add(item_collection)
             db.session.commit()
-            return item_schema.dump(new_item), 201
-        except ValidationError:
-            return {'errors': 'Validation error'}, 400
+            return item_schema.dump(item), 201
+        except ValidationError as e:
+            return {'errors': e.__str__()}, 400
             
 
 

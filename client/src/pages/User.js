@@ -19,6 +19,7 @@ function User() {
     },[user])
 
     function addNewCltn(newCollection) {
+
         setCollections([...collections, newCollection])
     }
 

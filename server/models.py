@@ -112,7 +112,7 @@ class ItemCollection(db.Model):
     collection = db.relationship("Collection", back_populates="item_collections")
 
     def __repr__(self):
-        return f"UserCollection User: {self.user_id}"
+        return f"ItemCollection: {self.collection_id}"
 
 
 # Comment => one-to-many
