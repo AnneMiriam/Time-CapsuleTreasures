@@ -192,7 +192,7 @@ class Items(Resource):
 
 class ItemById(Resource):
     def get(self, id):
-        item = Item.query.get(id)
+        item = db.session.get(Item, id)
         if item:
             return item_schema.dump(item), 200
         return make_response({"error": "Item not found"}, 404)
