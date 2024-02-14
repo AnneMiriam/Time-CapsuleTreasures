@@ -1,7 +1,7 @@
 import React from "react";
 import ItemCard from "./ItemCard";
 
-function ItemContainer({ items, removeItem, updateItem, addLike }) {
+function ItemContainer({ items, removeItem, editItem, addLike }) {
     return (
         <div id='item-card-container'>
             {items.map((item) => (
@@ -10,7 +10,7 @@ function ItemContainer({ items, removeItem, updateItem, addLike }) {
                     id={item.id}
                     key={item.id}
                     removeItem={removeItem}
-                    updateItem={updateItem}
+                    editItem={editItem}
                     addLike={addLike}
                 />
             ))}

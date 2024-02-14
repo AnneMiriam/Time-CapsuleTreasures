@@ -9,6 +9,7 @@ import { AuthContext } from '../components/AuthContext'
 function User() {
     const [collections, setCollections] = useState([]);
     const { user } = useContext(AuthContext)
+    
 
     useEffect(() => {
         if (user) {
@@ -19,20 +20,26 @@ function User() {
     },[user])
 
     function addNewCltn(newCollection) {
+
         setCollections([...collections, newCollection])
     }
 
     useEffect(() => {
-        console.log(collections);
+        // console.log(collections);
     }, [collections]); // Log collections whenever it changes
 
 
     function removeCollection(id) {
         setCollections(collections.filter(collection => collection.id !== id))
-    }
+    };
 
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const userName = userData ? userData.first_name: "New User";
     return (
         <>
+            <div className='user-name'>
+                <h2>{userName}'s Collections</h2>
+            </div>
             <CollectionContainer 
                 collections={collections} 
                 removeCollection={removeCollection} 

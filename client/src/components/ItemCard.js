@@ -1,9 +1,26 @@
 import React, { useState } from "react";
 
-function ItemCard({ userItem, removeItem, addLike }){
+function ItemCard({ userItem, removeItem, addLike, editItem }){
     const {name, image, description, category, decade, likes, id } = userItem
     // const [isTrade, setIsTrade] = useState(false)
     const [data, setData] = useState([])
+    const [editableItem, setEditableItem] = useState(userItem)
+    const [editMode, setEditMode] = useState(false)
+
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setEditableItem({ ...editableItem, [name]: value });
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        editsItem(editableItem);
+        setEditMode(false);
+    }
+
+    function toggleEdit() {
+        setEditMode(!editMode);
+    }
 
     function tradeItem() {
         fetch(`/api/items/${id}`, {
@@ -29,7 +46,7 @@ function ItemCard({ userItem, removeItem, addLike }){
         })
     }
 
-    function editItem(updatedItem) {
+    function editsItem(updatedItem) {
         const cleanUpdatedItem = {
             id: updatedItem.id, // Ensure the id is included
             name: updatedItem.name,
@@ -45,10 +62,13 @@ function ItemCard({ userItem, removeItem, addLike }){
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(cleanUpdatedItem),
+            // body: JSON.stringify(updatedItem),
         })
         .then(r => r.json())
         .then(updatedItem => {
-            setData(data.map(item => (item.id === updatedItem.id ? updatedItem : item)));
+            // setData(data.map(item => (item.id === updatedItem.id ? updatedItem : item)));
+            // setEditableItem(updatedItem)
+            editItem(updatedItem)
         })
         .catch(error => error)
     }
@@ -61,12 +81,27 @@ function ItemCard({ userItem, removeItem, addLike }){
                 alt={name}
                 className="item-image"
             />
-            <p>Description: {description}</p>
-            <p>Category: {category}</p>
-            <p>Decade: {decade}</p>
+            {editMode ? (
+                <form onSubmit={handleSubmit} className="update-form">
+                    <input type="text" name="name" value={editableItem.name} onChange={handleChange} />
+                    <input type="text" name="image" value={editableItem.image} onChange={handleChange} />
+                    <textarea name="description" value={editableItem.description} onChange={handleChange} />
+                    <input type="text" name="category" value={editableItem.category} onChange={handleChange} />
+                    <input type="text" name="decade" value={editableItem.decade} onChange={handleChange} />
+                    <button type="submit" className="update" >Update Item</button>
+                </form>
+            ) : (
+                <>
+                    <p><strong><em>Description:</em></strong> {description}</p>
+                    <p><strong><em>Category:</em></strong> {category}</p>
+                    <p><strong><em>Decade:</em></strong> {decade}</p>
+                    <button className="update" onClick={toggleEdit}>Edit Item</button>
+                </>
+            )}
+            
             <button className="like-btn" onClick={like} >🧡 {likes} Likes</button>
             <button className="del-btn" onClick={tradeItem}>Remove Item</button>
-            <button className="update" onClick={editItem}>Update Item</button>
+            {/* <button className="update" onClick={editItem}>Update Item</button> */}
         </div>
     )
 }

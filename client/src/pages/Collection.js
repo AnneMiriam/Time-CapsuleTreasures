@@ -11,7 +11,7 @@ function Collection() {
     const [showForm, setShowForm] = useState(false);
     const [items, setItems] = useState([]);
     const [filterItems, setFilterItems] = useState([]);
-    // const collectionId = JSON.parse(localStorage.getItem("collection"))?.id;
+    const [collectionName, setCollectionName] = useState('')
     const {id} = useParams()
 
     useEffect(() => {
@@ -19,7 +19,8 @@ function Collection() {
         .then(r => r.json())
         .then(collection => {
             setItems(collection.items);
-            console.log(collection.items)
+            setCollectionName(collection.name)
+            // console.log(collection.items)
         })
     },[id])
 
@@ -45,12 +46,20 @@ function Collection() {
         }))
     }
 
+    function editItemInCollection(updatedItem) {
+        setItems(items.map(item => (item.id === updatedItem.id ? updatedItem : item)));
+    }
+
     return (
         <>
+            <div className='user-name'>
+                <h2>{collectionName}</h2>
+            </div>
             <ItemContainer 
                 items={items} 
                 removeItem={removeItem} 
                 addLike={addLike} 
+                editItem={editItemInCollection}
                 />
             {showForm ? <ItemForm handleNewItem={addNewItem} /> : null}
             <div className='btnContainer'>
