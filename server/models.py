@@ -27,17 +27,17 @@ class User(db.Model):
     # Password Validation
     @hybrid_property
     def password_hash(self):
-        raise AttributeError("Password hashes are private.")  
-        # return self._password_hash
+        # raise AttributeError("Password hashes are private.")  
+        return self._password_hash
 
     @password_hash.setter
-    def password_set(self, password):
+    def password_hash(self, password):
         # password_hash = bcrypt.generate_password_hash(password.encode("utf-8"))
         # self._password_hash = password_hash.decode("utf-8")
         hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())          
         self._password_hash = hashed.decode("utf-8")
 
-    def password_check(self, password):
+    def authenticate(self, password):
         # return bcrypt.check_password_hash(self._password_hash, password.encode("utf-8"))
         return bcrypt.checkpw(password.encode("utf-8"), self._password_hash.encode("utf-8"))  
 

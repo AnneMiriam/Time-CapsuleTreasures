@@ -39,7 +39,7 @@ class Signup(Resource):
             )
             user_schema.validate(new_user)
             # new_user.password_hash = request.json["password"]
-            new_user.password_set(request.json["password"])
+            new_user.password_hash = request.json["password"]
             db.session.add(new_user)
             db.session.commit()
             session["user_id"] = new_user.id
@@ -54,7 +54,7 @@ class Login(Resource):
         password = request.json["password"]
 
         user = User.query.filter_by(username=username).first()
-        if user and user.password_check(password):
+        if user and user.authenticate(password):
             session["user_id"] = user.id
             return user_schema.dump(user), 200
         # session.clear()
