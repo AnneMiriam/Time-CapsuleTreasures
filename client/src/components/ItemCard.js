@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function ItemCard({ userItem, removeItem, addLike }){
+function ItemCard({ userItem, removeItem, addLike, editItem }){
     const {name, image, description, category, decade, likes, id } = userItem
     // const [isTrade, setIsTrade] = useState(false)
     const [data, setData] = useState([])
@@ -14,7 +14,7 @@ function ItemCard({ userItem, removeItem, addLike }){
 
     function handleSubmit(e) {
         e.preventDefault();
-        editItem(editableItem);
+        editsItem(editableItem);
         setEditMode(false);
     }
 
@@ -46,7 +46,7 @@ function ItemCard({ userItem, removeItem, addLike }){
         })
     }
 
-    function editItem(updatedItem) {
+    function editsItem(updatedItem) {
         const cleanUpdatedItem = {
             id: updatedItem.id, // Ensure the id is included
             name: updatedItem.name,
@@ -66,7 +66,9 @@ function ItemCard({ userItem, removeItem, addLike }){
         })
         .then(r => r.json())
         .then(updatedItem => {
-            setData(data.map(item => (item.id === updatedItem.id ? updatedItem : item)));
+            // setData(data.map(item => (item.id === updatedItem.id ? updatedItem : item)));
+            // setEditableItem(updatedItem)
+            editItem(updatedItem)
         })
         .catch(error => error)
     }
@@ -86,7 +88,7 @@ function ItemCard({ userItem, removeItem, addLike }){
                     <textarea name="description" value={editableItem.description} onChange={handleChange} />
                     <input type="text" name="category" value={editableItem.category} onChange={handleChange} />
                     <input type="text" name="decade" value={editableItem.decade} onChange={handleChange} />
-                    <button type="submit" className="update">Update Item</button>
+                    <button type="submit" className="update" >Update Item</button>
                 </form>
             ) : (
                 <>

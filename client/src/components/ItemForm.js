@@ -7,8 +7,8 @@ function ItemForm({handleNewItem}) {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [decade, setDecade] = useState('');
-  
   const {id} = useParams()
+  
   function handleSubmit(e) {
     e.preventDefault();
     
@@ -33,6 +33,12 @@ console.log("newItem", newItem);
     .then(res=>res.json())
     .then((newItem) => {
       handleNewItem(newItem)
+      // clear form
+      setName('');
+      setImage('');
+      setCategory('');
+      setDescription('');
+      setDecade('');
     })
   }
 

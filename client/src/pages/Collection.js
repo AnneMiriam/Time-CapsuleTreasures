@@ -45,12 +45,17 @@ function Collection() {
         }))
     }
 
+    function editItemInCollection(updatedItem) {
+        setItems(items.map(item => (item.id === updatedItem.id ? updatedItem : item)));
+    }
+
     return (
         <>
             <ItemContainer 
                 items={items} 
                 removeItem={removeItem} 
                 addLike={addLike} 
+                editItem={editItemInCollection}
                 />
             {showForm ? <ItemForm handleNewItem={addNewItem} /> : null}
             <div className='btnContainer'>
