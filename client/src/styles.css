@@ -262,6 +262,7 @@ nav {
   margin: 25px;
 }
 
+/* Collection Cards */
 #cltn-container {
   margin: 2rem;
 }
@@ -287,6 +288,20 @@ nav {
 
 .add-cltn-form {
   width: 80%;
+  font-size: x-large;
+}
+
+.add-cltn-form input{
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  height: 20px;
+  /* padding: 5px 10px; */
+  font-size: 14px;
+  margin-bottom: 2px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 1);
 }
 
 .submit {
@@ -297,7 +312,7 @@ nav {
     rgb(243, 207, 63)
   );
   border-radius: 5px;
-  height: 2rem;
+  /* height: 5rem; */
   width: max-content;
   color: whitesmoke;
   font-size: 18px;
@@ -310,6 +325,26 @@ nav {
   background-color: whitesmoke;
   border: #e04b52 solid 1px;
   color: #e04b52;
+}
+
+/* Item Cards */
+.add-item-form {
+  font-size: x-large;
+}
+
+.add-item-form input{
+  /* display: flex; */
+  flex-direction: column;
+  align-items: center;
+  /* font-size: x-large; */
+  width: 300px;
+  height: 20px;
+  /* padding: 5px 10px; */
+  font-size: 14px;
+  margin-bottom: 2px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 1);
 }
 
 .del-btn {
@@ -385,6 +420,21 @@ nav {
   );
   font-family: 'Exo 2', sans-serif;
   font-weight: bolder;
+}
+
+.update-form input{
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* font-size: large; */
+  width: 200px;
+  height: 15px;
+  padding: 5px 10px;
+  font-size: 14px;
+  margin-bottom: 5px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 1);
 }
 
 /* Table formatting */

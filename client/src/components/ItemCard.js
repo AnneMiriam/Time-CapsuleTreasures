@@ -82,7 +82,7 @@ function ItemCard({ userItem, removeItem, addLike, editItem }){
                 className="item-image"
             />
             {editMode ? (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="update-form">
                     <input type="text" name="name" value={editableItem.name} onChange={handleChange} />
                     <input type="text" name="image" value={editableItem.image} onChange={handleChange} />
                     <textarea name="description" value={editableItem.description} onChange={handleChange} />
@@ -92,9 +92,9 @@ function ItemCard({ userItem, removeItem, addLike, editItem }){
                 </form>
             ) : (
                 <>
-                    <p>Description: {description}</p>
-                    <p>Category: {category}</p>
-                    <p>Decade: {decade}</p>
+                    <p><strong><em>Description:</em></strong> {description}</p>
+                    <p><strong><em>Category:</em></strong> {category}</p>
+                    <p><strong><em>Decade:</em></strong> {decade}</p>
                     <button className="update" onClick={toggleEdit}>Edit Item</button>
                 </>
             )}
