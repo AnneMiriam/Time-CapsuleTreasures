@@ -18,7 +18,7 @@ function LoggedInLinks() {
   return (
     <nav>
       <NavLink
-        to="/"
+        to="/user_home"
         className="nav-link homeLink"
         activeClassName="active">
         {/* 🏰 */}
@@ -71,8 +71,10 @@ function LoggedOutLinks() {
 /* define the NavBar component */
 function NavBar() {
   const { user } = useContext(AuthContext);
-  // const loggedIn = user && Object.keys(user).length > 0;
-  const loggedIn = user;
+  const loggedIn = user && Object.keys(user).length > 0;
+  // const loggedIn = Object.keys(user).length > 0;
+  // const loggedIn = user;
+  // console.log(user);
   return (
     <nav>
       <div>

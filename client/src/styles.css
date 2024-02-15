@@ -18,6 +18,21 @@ nav {
   /* border: 5px solid green; */
 }
 
+.front-page {
+  text-align: center;
+  /* background-image: url("./assets/Logo.png");
+  background-size: contain; 
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 150px 150px; */
+}
+.logoContainer {
+  background-image: url("./assets/Logo.png");
+  background-size: contain; 
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 150px 150px;
+} 
 
 .nav-link {
   margin-left: 1px;
@@ -172,13 +187,7 @@ nav {
   margin: 15px;
 }
 
-/* .logoContainer {
-  /* background-image: url("./assets/Logo.png"); */
-  /* background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 150px 150px; */
-/* } */ 
+
 
 .loginTitle {
   color: white;

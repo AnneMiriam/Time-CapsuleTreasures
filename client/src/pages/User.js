@@ -18,7 +18,7 @@ function User() {
             .then(setCollections)
         }
     },[user])
-
+    console.log(user);
     function addNewCltn(newCollection) {
 
         setCollections([...collections, newCollection])

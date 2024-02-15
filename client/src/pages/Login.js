@@ -30,7 +30,7 @@ function Login() {
       .then((data) => {
         localStorage.setItem("user", JSON.stringify(data)); 
         setUser(data);
-        navigate('/');
+        navigate('/user_home');
       })
       .catch((e) => {
         console.error(e);
@@ -41,7 +41,6 @@ function Login() {
     <main>
       <div></div>
       <div className="loginMain">
-        <div className="logoContainer"></div>
         <div className="titleContainer">
           <h1 className="loginTitle">Time Capsule Login</h1>
         </div>

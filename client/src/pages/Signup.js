@@ -27,14 +27,13 @@ function Signup() {
     .then((r) => r.json())
     .then((data) => {
       setUser(data);
-      navigate('/');
+      navigate('/user_home');
     });
   };
 
   return (
     <main>
       <div className="signupMain">
-        <div className="logoContainer"></div>
         <div className="titleContainer">
           <h1 className="loginTitle">Time Capsule Signup</h1>
         </div>

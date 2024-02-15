@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import ItemForm from '../components/ItemForm';
 import ItemContainer from '../components/ItemContainer'
+import { AuthContext } from '../components/AuthContext';
 
 
 // Collection should fetch all items that share that collection_id
@@ -13,16 +14,20 @@ function Collection() {
     const [filterItems, setFilterItems] = useState([]);
     const [collectionName, setCollectionName] = useState('')
     const {id} = useParams()
+    const { user } = useContext(AuthContext)
 
     useEffect(() => {
-        fetch(`/api/collections/${id}`)
-        .then(r => r.json())
-        .then(collection => {
-            setItems(collection.items);
-            setCollectionName(collection.name)
-            // console.log(collection.items)
-        })
-    },[id])
+        if (user) {
+            fetch(`/api/collections/${id}`)
+            .then(r => r.json())
+            .then(collection => {
+                setItems(collection.items);
+                setCollectionName(collection.name)
+                // console.log(collection.items)
+            })
+        }
+    },[user, id])
+    console.log(user);
 
     function handleClick() {
         setShowForm((showForm) => !showForm);
