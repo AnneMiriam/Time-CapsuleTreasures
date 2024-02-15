@@ -27,6 +27,10 @@ def index():
 # def not_found(e):
 #     return render_template("index.html")
 
+@app.route("/user_home")
+def user_home():
+    return render_template('user_home.html')
+
 ######################Login/SignUp/CheckSession ##########################
 
 class Signup(Resource):
